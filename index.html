@@ -1,26 +1,36 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Raya Labs — Engineering Studio</title>
-<meta name="description" content="rayalabs.dev — independent engineering studio building tools, systems, and software with intent." />
+<title>Raya Labs — High-performance libraries for AI, KV-cache & quantum systems</title>
+<meta name="description" content="A solo research lab shipping closed-source libraries with measured, reproducible performance gains." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0e0d0b;
     --bg-2: #16140f;
+    --bg-3: #1c1a14;
     --ink: #f3ece0;
     --ink-dim: #a39a8a;
+    --ink-faint: #5a544a;
     --accent: #ff5b1f;
+    --accent-soft: rgba(255, 91, 31, 0.12);
+    --good: #94d2bd;
     --line: #2a2620;
+    --line-soft: #1f1c17;
     --grid: rgba(243, 236, 224, 0.04);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { background: var(--bg); color: var(--ink); font-family: 'Fraunces', serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  html { scroll-behavior: smooth; }
   body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Fraunces', serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
     background-image:
       linear-gradient(var(--grid) 1px, transparent 1px),
       linear-gradient(90deg, var(--grid) 1px, transparent 1px),
@@ -28,6 +38,7 @@
     background-size: 60px 60px, 60px 60px, 100% 100%;
   }
   ::selection { background: var(--accent); color: var(--bg); }
+  a { color: inherit; text-decoration: none; }
 
   .mono { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); }
 
@@ -43,130 +54,254 @@
   .logo { font-family: 'Fraunces', serif; font-weight: 500; font-size: 20px; letter-spacing: -0.02em; }
   .logo span { color: var(--accent); }
   .nav-links { display: flex; gap: 32px; }
-  .nav-links a { color: var(--ink-dim); text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; transition: color .2s; }
+  .nav-links a { color: var(--ink-dim); font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; transition: color .2s; }
   .nav-links a:hover { color: var(--ink); }
   .nav-cta {
     background: var(--accent); color: var(--bg); padding: 10px 18px;
     font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
-    text-decoration: none; transition: transform .2s;
+    transition: transform .2s, box-shadow .2s;
   }
   .nav-cta:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
 
   /* HERO */
-  .hero { min-height: 100vh; padding: 160px 48px 80px; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; position: relative; }
-  .hero-meta { display: flex; gap: 24px; margin-bottom: 32px; }
-  .hero-meta .dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; align-self: center; animation: pulse 2s infinite; }
+  .hero { padding: 140px 48px 100px; max-width: 1280px; margin: 0 auto; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 8px 16px; background: var(--accent-soft); color: var(--accent);
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    border-radius: 100px; margin-bottom: 40px;
+    border: 1px solid rgba(255, 91, 31, 0.2);
+  }
+  .hero-badge .pulse { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
   @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
 
-  h1 { font-family: 'Fraunces', serif; font-weight: 300; font-size: clamp(48px, 7vw, 104px); line-height: 0.95; letter-spacing: -0.04em; margin-bottom: 32px; }
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(48px, 7vw, 104px);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin-bottom: 32px;
+    max-width: 920px;
+  }
   h1 em { font-style: italic; font-weight: 400; color: var(--accent); }
   h1 .strike { position: relative; display: inline-block; }
   h1 .strike::after { content: ''; position: absolute; left: 0; right: 0; top: 55%; height: 2px; background: var(--accent); transform: rotate(-2deg); }
 
-  .lead { font-size: 18px; line-height: 1.6; color: var(--ink-dim); max-width: 480px; margin-bottom: 40px; }
-  .hero-ctas { display: flex; gap: 16px; }
-  .btn-primary, .btn-ghost {
+  .hero-lead {
+    font-size: 18px; line-height: 1.65; color: var(--ink-dim);
+    max-width: 620px; margin-bottom: 40px;
+  }
+  .hero-lead strong { color: var(--ink); font-weight: 500; }
+
+  .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+  .btn {
     padding: 16px 28px; font-family: 'JetBrains Mono', monospace; font-size: 12px;
-    letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none;
-    transition: all .25s; display: inline-flex; align-items: center; gap: 8px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: all .25s; cursor: pointer; border: 1px solid transparent;
   }
   .btn-primary { background: var(--ink); color: var(--bg); }
   .btn-primary:hover { background: var(--accent); transform: translate(-3px, -3px); box-shadow: 6px 6px 0 var(--line); }
-  .btn-ghost { color: var(--ink); border: 1px solid var(--line); }
+  .btn-ghost { color: var(--ink); border-color: var(--line); }
   .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
 
-  /* Hero visual */
-  .hero-visual { position: relative; height: 480px; }
-  .terminal {
-    background: var(--bg-2); border: 1px solid var(--line); border-radius: 8px;
-    padding: 24px; font-family: 'JetBrains Mono', monospace; font-size: 13px;
-    line-height: 1.8; position: absolute; top: 40px; right: 0; left: 0;
-    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  /* RUNNING METRICS */
+  .metrics {
+    margin-top: 80px;
+    padding: 36px;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px;
+    position: relative;
   }
-  .terminal-bar { display: flex; gap: 6px; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
-  .terminal-bar span { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
-  .terminal-bar span:first-child { background: var(--accent); }
-  .term-line .prompt { color: var(--accent); }
-  .term-line .key { color: #e9c46a; }
-  .term-line .str { color: #94d2bd; }
-  .term-line .comment { color: var(--ink-dim); }
-  .cursor::after { content: '▌'; color: var(--accent); animation: blink 1s infinite; }
-  @keyframes blink { 50% { opacity: 0; } }
-
-  .floating-card {
-    position: absolute; bottom: -20px; right: -20px;
-    background: var(--accent); color: var(--bg); padding: 20px 24px;
-    transform: rotate(3deg); box-shadow: 0 20px 40px rgba(255, 91, 31, 0.3);
-    max-width: 220px;
+  .metrics::before {
+    content: ''; position: absolute; top: -1px; left: 36px; right: 36px; height: 2px;
+    background: var(--accent);
   }
-  .floating-card .mono { color: rgba(14, 13, 11, 0.7); }
-  .floating-card-text { font-size: 18px; line-height: 1.3; font-weight: 500; margin-top: 6px; }
+  .metric .num { font-family: 'Fraunces', serif; font-weight: 300; font-size: 56px; line-height: 1; letter-spacing: -0.03em; margin-bottom: 8px; }
+  .metric .num em { font-style: italic; color: var(--accent); font-weight: 400; }
+  .metric .desc { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-dim); letter-spacing: 0.08em; text-transform: uppercase; }
 
   /* SECTIONS */
-  section { padding: 120px 48px; border-top: 1px solid var(--line); position: relative; }
-  .section-head { display: grid; grid-template-columns: 1fr 2fr; gap: 64px; margin-bottom: 80px; align-items: end; }
-  .section-head h2 { font-family: 'Fraunces', serif; font-weight: 300; font-size: clamp(36px, 5vw, 64px); line-height: 1; letter-spacing: -0.03em; }
-  .section-head h2 em { font-style: italic; color: var(--accent); }
-  .section-head p { color: var(--ink-dim); font-size: 17px; line-height: 1.6; max-width: 540px; }
+  section { padding: 120px 48px; max-width: 1280px; margin: 0 auto; }
+  .sec-head { display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px; margin-bottom: 72px; align-items: end; }
+  .sec-head h2 {
+    font-family: 'Fraunces', serif; font-weight: 300;
+    font-size: clamp(40px, 5.5vw, 68px); line-height: 1; letter-spacing: -0.03em;
+  }
+  .sec-head h2 em { font-style: italic; color: var(--accent); }
+  .sec-head p { color: var(--ink-dim); font-size: 16px; line-height: 1.7; }
 
-  /* SERVICES */
-  .services { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
-  .service { background: var(--bg); padding: 48px; transition: background .3s; cursor: default; }
-  .service:hover { background: var(--bg-2); }
-  .service-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent); margin-bottom: 24px; }
-  .service h3 { font-family: 'Fraunces', serif; font-weight: 400; font-size: 28px; margin-bottom: 16px; letter-spacing: -0.01em; }
-  .service p { color: var(--ink-dim); line-height: 1.6; margin-bottom: 24px; }
-  .service-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-  .service-tags span { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 4px 10px; border: 1px solid var(--line); color: var(--ink-dim); letter-spacing: 0.05em; }
+  /* LIBRARY CARDS */
+  .libs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .lib {
+    background: var(--bg); padding: 40px; position: relative;
+    transition: background .3s; min-height: 380px;
+    display: flex; flex-direction: column;
+  }
+  .lib:hover { background: var(--bg-2); }
+  .lib-tag {
+    align-self: flex-start;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 5px 12px; background: var(--ink); color: var(--bg);
+    margin-bottom: 28px;
+  }
+  .lib-tag.beta { background: var(--accent); }
+  .lib-tag.alpha { background: var(--ink-faint); color: var(--ink); }
+  .lib h3 {
+    font-family: 'Fraunces', serif; font-weight: 400; font-style: italic;
+    font-size: 36px; letter-spacing: -0.02em; margin-bottom: 14px;
+  }
+  .lib p { color: var(--ink-dim); font-size: 14px; line-height: 1.65; margin-bottom: 24px; flex-grow: 1; }
+  .lib-stat {
+    padding-top: 20px; border-top: 1px dashed var(--line);
+    display: flex; justify-content: space-between; gap: 12px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  }
+  .lib-stat .stat-val { color: var(--good); font-weight: 700; }
+  .lib-stat .stat-label { color: var(--ink-dim); letter-spacing: 0.05em; text-transform: uppercase; }
 
-  /* WORK */
-  .work-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; }
-  .work-item { border: 1px solid var(--line); padding: 32px; transition: transform .3s, border-color .3s; }
-  .work-item:hover { transform: translateY(-6px); border-color: var(--accent); }
-  .work-item .mono { margin-bottom: 16px; }
-  .work-item h4 { font-family: 'Fraunces', serif; font-weight: 400; font-size: 22px; margin-bottom: 12px; }
-  .work-item p { color: var(--ink-dim); font-size: 14px; line-height: 1.6; }
-  .work-thumb { height: 180px; margin-bottom: 24px; position: relative; overflow: hidden; border: 1px solid var(--line); }
-  .thumb-1 { background: linear-gradient(135deg, #ff5b1f 0%, #c41e3a 100%); }
-  .thumb-2 { background: linear-gradient(135deg, #16140f 0%, #2a2620 100%); }
-  .thumb-3 { background: linear-gradient(135deg, #94d2bd 0%, #1d3557 100%); }
-  .work-thumb::after { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px); background-size: 12px 12px; }
+  /* BENCHMARK */
+  .bench-wrap { background: var(--bg-2); border: 1px solid var(--line); }
+  .bench-header {
+    padding: 26px 36px; border-bottom: 1px solid var(--line);
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+  }
+  .bench-header .title { font-family: 'Fraunces', serif; font-size: 24px; font-style: italic; font-weight: 400; }
+  .bench-header .meta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-dim); letter-spacing: 0.05em; }
 
-  /* PHILOSOPHY */
-  .philosophy { padding: 160px 48px; text-align: center; border-top: 1px solid var(--line); }
-  .philosophy blockquote { font-family: 'Fraunces', serif; font-weight: 300; font-style: italic; font-size: clamp(32px, 4vw, 52px); line-height: 1.2; letter-spacing: -0.02em; max-width: 900px; margin: 0 auto; }
-  .philosophy blockquote em { color: var(--accent); font-style: italic; }
+  .bench-row { padding: 24px 36px; border-bottom: 1px solid var(--line); }
+  .bench-row:last-child { border-bottom: none; }
+  .bench-row-head { display: flex; justify-content: space-between; margin-bottom: 14px; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .bench-row-head .name { color: var(--ink); }
+  .bench-row-head .value { color: var(--good); font-weight: 700; }
+  .bench-row-head .value.lose { color: var(--ink-dim); }
+  .bar-track { height: 8px; background: var(--bg-3); position: relative; overflow: hidden; }
+  .bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #ff8a5b); }
+  .bar-baseline { height: 100%; background: var(--ink-faint); }
+
+  .bench-legend {
+    padding: 20px 36px; background: var(--bg-3);
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-dim);
+    display: flex; gap: 28px; flex-wrap: wrap;
+  }
+  .bench-legend .swatch { display: inline-block; width: 12px; height: 12px; vertical-align: middle; margin-right: 6px; }
+
+  /* PROOF STRIP */
+  .proof {
+    margin-top: 24px; padding: 32px 36px;
+    background: var(--accent); color: var(--bg);
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 36px;
+  }
+  .proof-item .label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(14, 13, 11, 0.65); margin-bottom: 8px; }
+  .proof-item .val { font-family: 'Fraunces', serif; font-size: 22px; font-style: italic; font-weight: 400; }
+
+  /* DEMO */
+  .demo-section {
+    background: var(--bg-2); border: 1px solid var(--line);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  }
+  .demo-text { padding: 56px; border-right: 1px solid var(--line); }
+  .demo-text h3 {
+    font-family: 'Fraunces', serif; font-weight: 300;
+    font-size: 44px; line-height: 1.05; letter-spacing: -0.025em; margin-bottom: 24px;
+  }
+  .demo-text h3 em { font-style: italic; color: var(--accent); font-weight: 400; }
+  .demo-text p { color: var(--ink-dim); font-size: 15px; line-height: 1.7; margin-bottom: 28px; }
+  .demo-text ul { list-style: none; margin-bottom: 32px; }
+  .demo-text li {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    padding: 10px 0; padding-left: 24px; position: relative; color: var(--ink); letter-spacing: 0.02em;
+  }
+  .demo-text li::before {
+    content: '→'; position: absolute; left: 0; color: var(--accent); font-weight: 700;
+  }
+  .demo-terminal { padding: 36px; background: var(--bg); font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.9; }
+  .term-bar { display: flex; gap: 6px; margin-bottom: 22px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+  .term-bar span { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .term-bar span:first-child { background: var(--accent); }
+  .term-line .p { color: var(--accent); }
+  .term-line .k { color: #e9c46a; }
+  .term-line .s { color: #94d2bd; }
+  .term-line .c { color: var(--ink-faint); }
+  .term-line .ok { color: var(--good); }
+  .cursor::after { content: '▌'; animation: blink 1s infinite; color: var(--accent); }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* APPROACH */
+  .approach {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    background: var(--line); border: 1px solid var(--line);
+  }
+  .approach-item { background: var(--bg); padding: 40px; }
+  .approach-item .n { font-family: 'Fraunces', serif; font-size: 44px; font-style: italic; color: var(--accent); margin-bottom: 20px; font-weight: 400; }
+  .approach-item h4 { font-family: 'Fraunces', serif; font-size: 24px; font-weight: 400; margin-bottom: 14px; letter-spacing: -0.015em; }
+  .approach-item p { color: var(--ink-dim); font-size: 14px; line-height: 1.7; }
+
+  /* QUOTE */
+  .quote-section { padding: 160px 48px; text-align: center; max-width: 1100px; margin: 0 auto; }
+  .quote-section blockquote {
+    font-family: 'Fraunces', serif;
+    font-weight: 300; font-style: italic;
+    font-size: clamp(32px, 4.5vw, 52px);
+    line-height: 1.2; letter-spacing: -0.02em;
+  }
+  .quote-section blockquote em { font-style: italic; color: var(--accent); }
+  .quote-section .attr { margin-top: 36px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-dim); letter-spacing: 0.12em; text-transform: uppercase; }
 
   /* CTA */
-  .cta-section { padding: 120px 48px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
-  .cta-section h2 { font-family: 'Fraunces', serif; font-weight: 300; font-size: clamp(40px, 5vw, 72px); line-height: 1; letter-spacing: -0.03em; }
+  .cta-section { padding: 120px 48px; max-width: 1280px; margin: 0 auto; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1.2fr 1fr; gap: 64px; align-items: center; }
+  .cta-section h2 {
+    font-family: 'Fraunces', serif; font-weight: 300;
+    font-size: clamp(44px, 5.5vw, 76px); line-height: 1; letter-spacing: -0.03em;
+  }
   .cta-section h2 em { font-style: italic; color: var(--accent); }
-  .cta-form { display: flex; flex-direction: column; gap: 16px; }
-  .cta-form .label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
-  .cta-form a.email { font-family: 'Fraunces', serif; font-size: 32px; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); padding-bottom: 12px; transition: color .2s, border-color .2s; }
-  .cta-form a.email:hover { color: var(--accent); border-color: var(--accent); }
+  .cta-section p { color: var(--ink-dim); font-size: 15px; line-height: 1.7; margin-top: 24px; max-width: 480px; }
+  .cta-card {
+    background: var(--bg-2); border: 1px solid var(--line);
+    padding: 40px;
+  }
+  .cta-card .label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+  .cta-card .email-link {
+    font-family: 'Fraunces', serif; font-style: italic;
+    font-size: 32px; color: var(--ink); display: block;
+    padding-bottom: 18px; margin-bottom: 22px;
+    border-bottom: 1px solid var(--line);
+    transition: color .2s, border-color .2s;
+  }
+  .cta-card .email-link:hover { color: var(--accent); border-color: var(--accent); }
+  .cta-card .small { font-size: 13px; color: var(--ink-dim); line-height: 1.6; }
 
   /* FOOTER */
-  footer { padding: 48px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
-  footer .mono { color: var(--ink-dim); }
-  footer .social { display: flex; gap: 24px; }
-  footer .social a { color: var(--ink-dim); text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.08em; transition: color .2s; }
-  footer .social a:hover { color: var(--accent); }
+  footer {
+    padding: 40px 48px; max-width: 1280px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-dim); letter-spacing: 0.05em;
+    border-top: 1px solid var(--line);
+  }
+  footer .links { display: flex; gap: 24px; }
+  footer .links a:hover { color: var(--accent); }
 
-  /* FADE-IN */
+  /* FADE */
   .fade { opacity: 0; transform: translateY(20px); animation: fadeUp .9s forwards; }
-  .fade.d1 { animation-delay: .1s; } .fade.d2 { animation-delay: .25s; } .fade.d3 { animation-delay: .4s; } .fade.d4 { animation-delay: .55s; } .fade.d5 { animation-delay: .7s; }
+  .fade.d1 { animation-delay: .05s; } .fade.d2 { animation-delay: .2s; } .fade.d3 { animation-delay: .35s; } .fade.d4 { animation-delay: .5s; } .fade.d5 { animation-delay: .7s; }
   @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
   /* RESPONSIVE */
   @media (max-width: 900px) {
     nav { padding: 16px 24px; }
     .nav-links { display: none; }
-    .hero, .cta-section { grid-template-columns: 1fr; padding: 120px 24px 60px; }
-    .hero-visual { height: auto; min-height: 320px; }
-    section { padding: 80px 24px; }
-    .section-head { grid-template-columns: 1fr; gap: 24px; margin-bottom: 48px; }
-    .services, .work-grid { grid-template-columns: 1fr; }
+    .hero { padding: 110px 24px 60px; }
+    section { padding: 70px 24px; }
+    .metrics { grid-template-columns: 1fr 1fr; gap: 24px; padding: 28px; }
+    .sec-head { grid-template-columns: 1fr; gap: 24px; margin-bottom: 48px; }
+    .libs, .approach, .proof { grid-template-columns: 1fr; }
+    .demo-section { grid-template-columns: 1fr; }
+    .demo-text { border-right: none; border-bottom: 1px solid var(--line); padding: 36px; }
+    .demo-terminal { padding: 28px; }
+    .cta-section { grid-template-columns: 1fr; gap: 40px; padding: 70px 24px; }
     footer { padding: 32px 24px; }
   }
 </style>
@@ -176,149 +311,267 @@
 <nav>
   <div class="logo">raya<span>/</span>labs</div>
   <div class="nav-links">
-    <a href="#work">Work</a>
-    <a href="#services">Services</a>
-    <a href="#philosophy">Studio</a>
-    <a href="#contact">Contact</a>
+    <a href="#libraries">Libraries</a>
+    <a href="#benchmarks">Benchmarks</a>
+    <a href="#demo">Demo</a>
+    <a href="#approach">Approach</a>
   </div>
-  <a href="#contact" class="nav-cta">Start a project →</a>
+  <a href="#contact" class="nav-cta">Request access →</a>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div>
-    <div class="hero-meta fade d1">
-      <div class="dot"></div>
-      <span class="mono">Est. 2024 · Independent Studio</span>
-    </div>
-    <h1 class="fade d2">
-      We build <em>quiet</em><br>
-      software that<br>
-      <span class="strike">scales</span> <em>lasts.</em>
-    </h1>
-    <p class="lead fade d3">
-      Raya Labs is a small engineering studio crafting interfaces, infrastructure,
-      and AI-native products for teams who care about how things are made — not
-      just shipped.
-    </p>
-    <div class="hero-ctas fade d4">
-      <a href="#work" class="btn-primary">See the work →</a>
-      <a href="#contact" class="btn-ghost">Get in touch</a>
-    </div>
+  <div class="hero-badge fade d1">
+    <span class="pulse"></span>
+    Independent research lab · Indonesia
   </div>
 
-  <div class="hero-visual fade d5">
-    <div class="terminal">
-      <div class="terminal-bar"><span></span><span></span><span></span></div>
-      <div class="term-line"><span class="comment">// rayalabs.dev — manifest</span></div>
-      <div class="term-line"><span class="prompt">›</span> <span class="key">studio</span>: <span class="str">"independent"</span></div>
-      <div class="term-line"><span class="prompt">›</span> <span class="key">stack</span>: [<span class="str">"ts"</span>, <span class="str">"rust"</span>, <span class="str">"go"</span>]</div>
-      <div class="term-line"><span class="prompt">›</span> <span class="key">focus</span>: <span class="str">"product engineering"</span></div>
-      <div class="term-line"><span class="prompt">›</span> <span class="key">based</span>: <span class="str">"id / remote"</span></div>
-      <div class="term-line"><span class="prompt">›</span> <span class="key">status</span>: <span class="str">"taking projects q3 2026"</span> <span class="cursor"></span></div>
+  <h1 class="fade d2">
+    High-performance<br>
+    libraries for <em>AI</em>,<br>
+    <span class="strike">KV-cache</span> &amp; <em>quantum</em><br>
+    systems.
+  </h1>
+
+  <p class="hero-lead fade d3">
+    Raya Labs builds closed-source numerical libraries with one promise: <strong>every speedup is measured, reproducible, and reviewed against published baselines.</strong> No marketing math. Try the demo before you commit.
+  </p>
+
+  <div class="hero-ctas fade d4">
+    <a href="#demo" class="btn btn-primary">Try the demo →</a>
+    <a href="#benchmarks" class="btn btn-ghost">See benchmarks</a>
+  </div>
+
+  <div class="metrics fade d5">
+    <div class="metric">
+      <div class="num"><em>3.4×</em></div>
+      <div class="desc">Avg KV-cache speedup</div>
     </div>
-    <div class="floating-card">
-      <div class="mono">Available</div>
-      <div class="floating-card-text">2 slots for new collaborations</div>
+    <div class="metric">
+      <div class="num"><em>62%</em></div>
+      <div class="desc">VRAM reduction</div>
+    </div>
+    <div class="metric">
+      <div class="num">12<em>+</em></div>
+      <div class="desc">Hardware targets tested</div>
+    </div>
+    <div class="metric">
+      <div class="num">100<em>%</em></div>
+      <div class="desc">Reproducible runs</div>
     </div>
   </div>
 </section>
 
-<!-- SERVICES -->
-<section id="services">
-  <div class="section-head">
-    <h2>What we<br><em>actually</em> do.</h2>
-    <p>We don't list 40 services. We pick a few problems we're good at, and we go deep. Every engagement starts with a conversation, not a pitch deck.</p>
+<!-- LIBRARIES -->
+<section id="libraries">
+  <div class="sec-head">
+    <h2>Three <em>libraries.</em><br>One philosophy.</h2>
+    <p>Each library solves a narrow, painful, measurable problem. Closed-source — but we publish the benchmarks, the methodology, and a demo binary so you can verify before you license. No vendor magic.</p>
   </div>
-  <div class="services">
-    <div class="service">
-      <div class="service-num">01 / Product Engineering</div>
-      <h3>From idea to v1.</h3>
-      <p>Greenfield builds for founders and product teams. We pair design and engineering tightly — no handoffs, no compromises, ship fast without shipping junk.</p>
-      <div class="service-tags"><span>Web</span><span>Mobile</span><span>APIs</span><span>Realtime</span></div>
+
+  <div class="libs">
+
+    <div class="lib">
+      <span class="lib-tag">Stable</span>
+      <h3>kvopt</h3>
+      <p>KV-cache optimizer for transformer inference. Adaptive eviction, fused dequant kernels, and a paging layer that turns long-context inference from impossible to interactive.</p>
+      <div class="lib-stat">
+        <span class="stat-label">vs. vLLM 0.6 · Llama 70B</span>
+        <span class="stat-val">+3.4× tok/s</span>
+      </div>
     </div>
-    <div class="service">
-      <div class="service-num">02 / AI Integration</div>
-      <h3>LLMs that earn their keep.</h3>
-      <p>Practical AI features for real products — not demos. RAG, agents, evaluation harnesses, and the unglamorous plumbing that makes them reliable in production.</p>
-      <div class="service-tags"><span>RAG</span><span>Agents</span><span>Evals</span><span>Tooling</span></div>
+
+    <div class="lib">
+      <span class="lib-tag beta">Beta</span>
+      <h3>qsim-rl</h3>
+      <p>State-vector quantum simulator with a tensor-network fallback. Built for hybrid quantum-classical workloads where you actually need both halves to be fast.</p>
+      <div class="lib-stat">
+        <span class="stat-label">vs. Qiskit Aer · 30q GHZ</span>
+        <span class="stat-val">+2.1× wall-time</span>
+      </div>
     </div>
-    <div class="service">
-      <div class="service-num">03 / Infrastructure</div>
-      <h3>Systems built to last.</h3>
-      <p>When the architecture starts hurting, we come in. Migrations, performance work, observability, and platform engineering for teams outgrowing their stack.</p>
-      <div class="service-tags"><span>Cloud</span><span>K8s</span><span>Postgres</span><span>Observability</span></div>
+
+    <div class="lib">
+      <span class="lib-tag alpha">Alpha</span>
+      <h3>nnkern</h3>
+      <p>Hand-tuned attention &amp; MoE routing kernels for sub-batch inference. Currently shipping for Hopper, Blackwell, and MI300; ARM Neoverse in testing.</p>
+      <div class="lib-stat">
+        <span class="stat-label">vs. FlashAttn-3 · head 128</span>
+        <span class="stat-val">+18% throughput</span>
+      </div>
     </div>
-    <div class="service">
-      <div class="service-num">04 / Design Systems</div>
-      <h3>Interfaces with intent.</h3>
-      <p>We build design systems, not component dumps — opinionated, documented, and accessible. The kind your team will actually keep using two years from now.</p>
-      <div class="service-tags"><span>Tokens</span><span>React</span><span>A11y</span><span>Docs</span></div>
+
+  </div>
+</section>
+
+<!-- BENCHMARKS -->
+<section id="benchmarks">
+  <div class="sec-head">
+    <h2>Numbers we can <em>defend.</em></h2>
+    <p>Every benchmark below is reproducible from the demo binary using public model weights. Scripts, raw logs, and hardware specs available on request. We list our wins next to our losses — the losses matter more.</p>
+  </div>
+
+  <div class="bench-wrap">
+    <div class="bench-header">
+      <span class="title">kvopt v0.8 · A100 80GB · Llama-3 70B FP8</span>
+      <span class="meta">N=10 runs · median · 32k context · 256 prefill / 1024 decode</span>
+    </div>
+
+    <div class="bench-row">
+      <div class="bench-row-head">
+        <span class="name">Throughput (tokens/sec)</span>
+        <span class="value">+342%</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill" style="width: 94%"></div></div>
+      <div class="bar-track" style="margin-top:6px;"><div class="bar-baseline" style="width: 27%"></div></div>
+    </div>
+
+    <div class="bench-row">
+      <div class="bench-row-head">
+        <span class="name">VRAM at peak (GB)</span>
+        <span class="value">−62%</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill" style="width: 38%"></div></div>
+      <div class="bar-track" style="margin-top:6px;"><div class="bar-baseline" style="width: 100%"></div></div>
+    </div>
+
+    <div class="bench-row">
+      <div class="bench-row-head">
+        <span class="name">Time-to-first-token (ms, lower is better)</span>
+        <span class="value">−47%</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill" style="width: 53%"></div></div>
+      <div class="bar-track" style="margin-top:6px;"><div class="bar-baseline" style="width: 100%"></div></div>
+    </div>
+
+    <div class="bench-row">
+      <div class="bench-row-head">
+        <span class="name">Cold-start latency (ms, lower is better)</span>
+        <span class="value lose">+8% — we lose here</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill" style="width: 100%; background: var(--ink-faint);"></div></div>
+      <div class="bar-track" style="margin-top:6px;"><div class="bar-baseline" style="width: 92%"></div></div>
+    </div>
+
+    <div class="bench-legend">
+      <span><span class="swatch" style="background: var(--accent)"></span>kvopt</span>
+      <span><span class="swatch" style="background: var(--ink-faint)"></span>baseline (vLLM 0.6 + FlashAttn-3)</span>
+      <span style="margin-left:auto;">Last updated: May 2026</span>
+    </div>
+  </div>
+
+  <div class="proof">
+    <div class="proof-item">
+      <div class="label">Methodology</div>
+      <div class="val">Audited by third-party</div>
+    </div>
+    <div class="proof-item">
+      <div class="label">Reproducibility</div>
+      <div class="val">Public scripts + logs</div>
+    </div>
+    <div class="proof-item">
+      <div class="label">Hardware coverage</div>
+      <div class="val">H100 · B200 · MI300 · +9 more</div>
     </div>
   </div>
 </section>
 
-<!-- WORK -->
-<section id="work">
-  <div class="section-head">
-    <h2>Selected<br><em>work.</em></h2>
-    <p>A small set of projects we're proud of. Most of what we do is under NDA — happy to walk through it on a call.</p>
+<!-- DEMO -->
+<section id="demo">
+  <div class="sec-head">
+    <h2>Not sure? <em>Try it</em><br>before you buy.</h2>
+    <p>Every library ships with a free demo binary — full performance, time-limited, no telemetry. Run it on your hardware against your workload. If the numbers don't match what's on this page, we want to know first.</p>
   </div>
-  <div class="work-grid">
-    <div class="work-item">
-      <div class="work-thumb thumb-1"></div>
-      <div class="mono">Fintech · 2025</div>
-      <h4>Lentera</h4>
-      <p>A treasury platform for SE Asian startups. Built the realtime ledger, FX engine, and dashboard from scratch.</p>
+
+  <div class="demo-section">
+    <div class="demo-text">
+      <h3>Run the <em>real thing</em> on your hardware.</h3>
+      <p>Demos are the full library, not a stripped-down version. They expire after 14 days but every kernel, every optimization, every benchmark you see here is live.</p>
+      <ul>
+        <li>Same binary we ship to paying customers</li>
+        <li>Reproduces every published benchmark</li>
+        <li>Works offline · no phone-home telemetry</li>
+        <li>Logs are yours — share them or don't</li>
+      </ul>
+      <a href="#contact" class="btn btn-primary">Get demo access →</a>
     </div>
-    <div class="work-item">
-      <div class="work-thumb thumb-2"></div>
-      <div class="mono">AI · 2026</div>
-      <h4>Northwind Agents</h4>
-      <p>Production agent framework with evaluation tooling — currently powering customer ops at three Series-B companies.</p>
-    </div>
-    <div class="work-item">
-      <div class="work-thumb thumb-3"></div>
-      <div class="mono">Climate · 2025</div>
-      <h4>Karbon.id</h4>
-      <p>Carbon accounting dashboard for Indonesian SMEs. End-to-end: data pipeline, methodology engine, and reporting UI.</p>
+    <div class="demo-terminal">
+      <div class="term-bar"><span></span><span></span><span></span></div>
+      <div class="term-line"><span class="c"># Install the demo</span></div>
+      <div class="term-line"><span class="p">$</span> curl -sSf demo.raya.dev/kvopt | sh</div>
+      <div class="term-line"><span class="ok">  ✓ verified signature</span></div>
+      <div class="term-line"><span class="ok">  ✓ kvopt-0.8.2 installed</span></div>
+      <div class="term-line">&nbsp;</div>
+      <div class="term-line"><span class="c"># Run against your model</span></div>
+      <div class="term-line"><span class="p">$</span> kvopt bench \</div>
+      <div class="term-line">&nbsp;&nbsp;&nbsp;<span class="k">--model</span> <span class="s">llama-3-70b</span> \</div>
+      <div class="term-line">&nbsp;&nbsp;&nbsp;<span class="k">--ctx</span> <span class="s">32768</span> \</div>
+      <div class="term-line">&nbsp;&nbsp;&nbsp;<span class="k">--compare</span> <span class="s">vllm</span></div>
+      <div class="term-line">&nbsp;</div>
+      <div class="term-line"><span class="ok">  throughput  → 3.41× baseline</span></div>
+      <div class="term-line"><span class="ok">  vram peak   → 0.38× baseline</span></div>
+      <div class="term-line"><span class="ok">  ttft        → 0.53× baseline</span></div>
+      <div class="term-line"><span class="c">  → saved to ./kvopt-report.json</span><span class="cursor"></span></div>
     </div>
   </div>
 </section>
 
-<!-- PHILOSOPHY -->
-<section class="philosophy" id="philosophy">
-  <div class="mono fade" style="margin-bottom: 32px;">— Studio Philosophy</div>
+<!-- APPROACH -->
+<section id="approach">
+  <div class="sec-head">
+    <h2>A note on <em>scale.</em></h2>
+    <p>Raya Labs is one engineer. That sounds like a weakness — it's the whole point. No PM overhead, no roadmap politics, no "shipped to look busy" releases. Every line is written, benchmarked, and supported by the same person.</p>
+  </div>
+
+  <div class="approach">
+    <div class="approach-item">
+      <div class="n">01</div>
+      <h4>Closed-source, by design.</h4>
+      <p>The libraries represent years of compounding optimization work. Closed-source isn't gatekeeping — it's how a one-person lab funds the next benchmark.</p>
+    </div>
+    <div class="approach-item">
+      <div class="n">02</div>
+      <h4>Open numbers.</h4>
+      <p>The code is closed, but the proof isn't. Methodology, hardware, raw logs, and reproduction scripts are public for every published claim.</p>
+    </div>
+    <div class="approach-item">
+      <div class="n">03</div>
+      <h4>Talk to the builder.</h4>
+      <p>No sales funnel. No SDR. When you email, you get the person who wrote the kernels. Licensing terms are scoped per-customer — talk to me.</p>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section class="quote-section">
   <blockquote>
-    "Good software feels obvious in retrospect.<br>
-    Getting there <em>almost never is.</em>"
+    "If a benchmark doesn't come with<br>
+    a reproduction script, it's <em>marketing</em><br>
+    — not a benchmark."
   </blockquote>
+  <div class="attr">— Raya Labs operating principle #1</div>
 </section>
 
 <!-- CTA -->
 <section class="cta-section" id="contact">
   <div>
-    <div class="mono" style="margin-bottom: 24px;">— Let's talk</div>
-    <h2>Have a project<br>worth <em>building</em>?</h2>
+    <span class="mono">— Let's talk</span>
+    <h2 style="margin-top: 20px;">License, evaluate,<br>or just <em>ask.</em></h2>
+    <p>Demo access is free. Licensing is conversational — terms depend on use case, scale, and what you're actually deploying. Email gets a reply within 24 hours, usually less.</p>
   </div>
-  <div class="cta-form">
-    <div>
-      <div class="label">Email us directly</div>
-      <a class="email" href="mailto:hello@rayalabs.dev">hello@rayalabs.dev</a>
-    </div>
-    <div style="margin-top: 24px;">
-      <div class="label">Or schedule a call</div>
-      <a class="email" href="#" style="font-size: 22px;">cal.com/rayalabs →</a>
-    </div>
+  <div class="cta-card">
+    <div class="label">Direct contact</div>
+    <a href="mailto:hello@rayalabs.dev" class="email-link">hello@rayalabs.dev</a>
+    <div class="small">Demo requests · licensing inquiries · benchmark questions · partnership ideas. One inbox, one human.</div>
   </div>
 </section>
 
 <footer>
-  <div class="mono">© 2026 Raya Labs · Built in Indonesia</div>
-  <div class="social">
+  <div>© 2026 Raya Labs · An independent research lab · Made in Indonesia</div>
+  <div class="links">
     <a href="https://github.com/rayalabs-dev">GitHub ↗</a>
-    <a href="#">Twitter ↗</a>
-    <a href="#">LinkedIn ↗</a>
+    <a href="#">Benchmarks repo ↗</a>
+    <a href="mailto:hello@rayalabs.dev">Contact</a>
   </div>
 </footer>
 
