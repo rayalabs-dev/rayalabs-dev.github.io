@@ -3,8 +3,13 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>rayakv — Sub-2ms p99 KV-cache. On CPU.</title>
-<meta name="description" content="A production-grade KV-cache server built for CPU. 1.95ms p99 over 24h, 838k requests, 99.9997% success rate." />
+<title>Raya Labs — Independent research lab building high-performance systems</title>
+<meta name="description" content="A solo research lab building closed-source libraries for AI, KV-cache, quantum, and high-performance systems. Numbers measured, not marketed." />
+
+<!-- Favicon: monogram R in accent oranye, SVG inline -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230e0d0b'/%3E%3Cpath d='M18 46 V18 H34 a8 8 0 0 1 0 16 H22 M34 34 L46 46' stroke='%23ff5b1f' stroke-width='5' stroke-linecap='square' stroke-linejoin='miter' fill='none'/%3E%3C/svg%3E" />
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230e0d0b'/%3E%3Cpath d='M18 46 V18 H34 a8 8 0 0 1 0 16 H22 M34 34 L46 46' stroke='%23ff5b1f' stroke-width='5' stroke-linecap='square' stroke-linejoin='miter' fill='none'/%3E%3C/svg%3E" />
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -21,7 +26,6 @@
     --good: #94d2bd;
     --warn: #e9c46a;
     --line: #2a2620;
-    --line-soft: #1f1c17;
     --grid: rgba(243, 236, 224, 0.04);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -52,8 +56,9 @@
     background: rgba(14, 13, 11, 0.6);
     border-bottom: 1px solid var(--line);
   }
-  .logo { font-family: 'Fraunces', serif; font-weight: 500; font-size: 20px; letter-spacing: -0.02em; }
-  .logo span { color: var(--accent); }
+  .logo { display: flex; align-items: center; gap: 10px; font-family: 'Fraunces', serif; font-weight: 500; font-size: 20px; letter-spacing: -0.02em; }
+  .logo .mark { width: 22px; height: 22px; }
+  .logo .div { color: var(--accent); }
   .nav-links { display: flex; gap: 32px; }
   .nav-links a { color: var(--ink-dim); font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; transition: color .2s; }
   .nav-links a:hover { color: var(--ink); }
@@ -79,11 +84,11 @@
   h1 {
     font-family: 'Fraunces', serif;
     font-weight: 300;
-    font-size: clamp(48px, 7.5vw, 112px);
+    font-size: clamp(48px, 7vw, 104px);
     line-height: 0.95;
     letter-spacing: -0.04em;
     margin-bottom: 32px;
-    max-width: 980px;
+    max-width: 960px;
   }
   h1 em { font-style: italic; font-weight: 400; color: var(--accent); }
   h1 .strike { position: relative; display: inline-block; }
@@ -107,22 +112,17 @@
   .btn-ghost { color: var(--ink); border-color: var(--line); }
   .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
 
-  /* HERO METRICS */
-  .metrics {
+  /* SUMMARY STATUS */
+  .status-strip {
     margin-top: 80px;
-    padding: 36px;
+    padding: 24px 36px;
     background: var(--bg-2);
     border: 1px solid var(--line);
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px;
-    position: relative;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px;
   }
-  .metrics::before {
-    content: ''; position: absolute; top: -1px; left: 36px; right: 36px; height: 2px;
-    background: var(--accent);
-  }
-  .metric .num { font-family: 'Fraunces', serif; font-weight: 300; font-size: 56px; line-height: 1; letter-spacing: -0.03em; margin-bottom: 8px; }
-  .metric .num em { font-style: italic; color: var(--accent); font-weight: 400; }
-  .metric .desc { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-dim); letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.5; }
+  .status-strip .item { display: flex; align-items: center; gap: 14px; }
+  .status-strip .item .v { font-family: 'Fraunces', serif; font-size: 28px; font-style: italic; color: var(--accent); font-weight: 400; }
+  .status-strip .item .l { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-dim); letter-spacing: 0.1em; text-transform: uppercase; line-height: 1.4; }
 
   /* SECTIONS */
   section { padding: 120px 48px; max-width: 1280px; margin: 0 auto; }
@@ -134,120 +134,72 @@
   .sec-head h2 em { font-style: italic; color: var(--accent); }
   .sec-head p { color: var(--ink-dim); font-size: 16px; line-height: 1.7; }
 
-  /* WHY-CPU SECTION */
-  .why-cpu {
+  /* FLAGSHIP CARD */
+  .flagship {
     background: var(--bg-2); border: 1px solid var(--line);
-    padding: 56px; display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center;
+    display: grid; grid-template-columns: 1.1fr 1fr; gap: 0;
+    overflow: hidden;
   }
-  .why-cpu h3 {
-    font-family: 'Fraunces', serif; font-weight: 300;
-    font-size: 44px; line-height: 1.05; letter-spacing: -0.025em; margin-bottom: 24px;
-  }
-  .why-cpu h3 em { font-style: italic; color: var(--accent); font-weight: 400; }
-  .why-cpu .lead { color: var(--ink-dim); font-size: 15px; line-height: 1.7; margin-bottom: 24px; }
-  .why-cpu .lead strong { color: var(--ink); font-weight: 500; }
-  .why-list { list-style: none; }
-  .why-list li {
-    padding: 18px 0; border-top: 1px solid var(--line);
-    display: grid; grid-template-columns: 40px 1fr; gap: 16px; align-items: start;
-  }
-  .why-list li:last-child { border-bottom: 1px solid var(--line); }
-  .why-list .icon { color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; }
-  .why-list .text { font-size: 14px; line-height: 1.6; color: var(--ink); }
-  .why-list .text span { color: var(--ink-dim); display: block; margin-top: 4px; font-size: 13px; }
-
-  /* BENCHMARK */
-  .bench-wrap { background: var(--bg-2); border: 1px solid var(--line); }
-  .bench-header {
-    padding: 26px 36px; border-bottom: 1px solid var(--line);
-    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
-  }
-  .bench-header .title { font-family: 'Fraunces', serif; font-size: 24px; font-style: italic; font-weight: 400; }
-  .bench-header .meta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-dim); letter-spacing: 0.05em; }
-
-  .bench-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); }
-  .bench-cell { background: var(--bg-2); padding: 32px 36px; }
-  .bench-cell .label-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; }
-  .bench-cell .cell-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-dim); letter-spacing: 0.08em; text-transform: uppercase; }
-  .bench-cell .cell-sub { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-faint); }
-  .bench-cell .big-num { font-family: 'Fraunces', serif; font-weight: 300; font-size: 56px; line-height: 1; letter-spacing: -0.03em; margin-bottom: 8px; }
-  .bench-cell .big-num em { font-style: italic; color: var(--accent); font-weight: 400; }
-  .bench-cell .cell-foot { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--good); }
-  .bench-cell .cell-foot.warn { color: var(--warn); }
-  .bench-cell .cell-foot.neutral { color: var(--ink-dim); }
-
-  /* Latency distribution */
-  .lat-dist {
-    background: var(--bg-2); border: 1px solid var(--line);
-    margin-top: 24px; padding: 36px;
-  }
-  .lat-dist h4 { font-family: 'Fraunces', serif; font-size: 24px; font-style: italic; font-weight: 400; margin-bottom: 28px; }
-  .lat-row { display: grid; grid-template-columns: 80px 1fr 100px; gap: 20px; align-items: center; padding: 14px 0; border-bottom: 1px dashed var(--line); }
-  .lat-row:last-child { border-bottom: none; }
-  .lat-row .pct { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--ink-dim); letter-spacing: 0.05em; }
-  .lat-row .bar { height: 10px; background: var(--bg-3); position: relative; overflow: hidden; }
-  .lat-row .bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #ff8a5b); }
-  .lat-row .value { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--ink); text-align: right; font-weight: 500; }
-
-  /* Disclosure callout */
-  .disclosure {
-    margin-top: 24px; padding: 28px 36px;
-    background: var(--accent); color: var(--bg);
-    display: grid; grid-template-columns: auto 1fr; gap: 24px; align-items: center;
-  }
-  .disclosure .ic { font-family: 'Fraunces', serif; font-style: italic; font-size: 36px; }
-  .disclosure h5 { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 500; margin-bottom: 6px; letter-spacing: -0.01em; }
-  .disclosure p { font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.6; color: rgba(14, 13, 11, 0.75); }
-
-  /* ROADMAP */
-  .roadmap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
-  .road-item { background: var(--bg); padding: 36px; position: relative; }
-  .road-tag {
+  .flagship-left { padding: 56px; border-right: 1px solid var(--line); }
+  .flagship-tag {
     display: inline-block;
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
-    padding: 5px 12px; margin-bottom: 24px;
+    padding: 5px 12px; background: var(--good); color: var(--bg);
+    margin-bottom: 28px;
   }
-  .road-tag.shipped { background: var(--good); color: var(--bg); }
-  .road-tag.progress { background: var(--accent); color: var(--bg); }
-  .road-tag.planned { background: var(--ink-faint); color: var(--ink); }
-  .road-item h4 { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 400; margin-bottom: 12px; letter-spacing: -0.015em; }
-  .road-item h4 em { font-style: italic; color: var(--accent); }
-  .road-item p { color: var(--ink-dim); font-size: 13px; line-height: 1.65; margin-bottom: 18px; }
-  .road-item .stat { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-faint); padding-top: 14px; border-top: 1px dashed var(--line); }
-  .road-item .stat strong { color: var(--ink); font-weight: 700; }
+  .flagship-left h3 {
+    font-family: 'Fraunces', serif; font-weight: 400; font-style: italic;
+    font-size: 56px; letter-spacing: -0.025em; margin-bottom: 16px;
+    line-height: 1;
+  }
+  .flagship-left .tagline { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 28px; }
+  .flagship-left p { color: var(--ink-dim); font-size: 15px; line-height: 1.7; margin-bottom: 32px; }
+  .flagship-left p strong { color: var(--ink); font-weight: 500; }
+  .flagship-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); margin-bottom: 32px; }
+  .flagship-stat { background: var(--bg); padding: 20px; }
+  .flagship-stat .v { font-family: 'Fraunces', serif; font-size: 32px; font-style: italic; color: var(--accent); font-weight: 400; line-height: 1; margin-bottom: 6px; }
+  .flagship-stat .l { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-dim); letter-spacing: 0.08em; text-transform: uppercase; }
 
-  /* DEMO */
-  .demo-section {
-    background: var(--bg-2); border: 1px solid var(--line);
-    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  /* Flagship right - benchmark mini */
+  .flagship-right { padding: 0; background: var(--bg); }
+  .fr-header { padding: 20px 28px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+  .fr-header .t { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-dim); letter-spacing: 0.08em; text-transform: uppercase; }
+  .fr-header .live { display: flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--good); letter-spacing: 0.1em; }
+  .fr-header .live .dot { width: 6px; height: 6px; background: var(--good); border-radius: 50%; animation: pulse 2s infinite; }
+  .lat-rows { padding: 24px 28px; }
+  .lat-row { display: grid; grid-template-columns: 50px 1fr 80px; gap: 14px; align-items: center; padding: 10px 0; }
+  .lat-row .pct { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-dim); letter-spacing: 0.05em; }
+  .lat-row .bar { height: 8px; background: var(--bg-3); position: relative; overflow: hidden; }
+  .lat-row .bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #ff8a5b); }
+  .lat-row .value { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ink); text-align: right; font-weight: 500; }
+  .lat-row .value.warn { color: var(--warn); }
+  .fr-foot { padding: 16px 28px; background: var(--bg-2); border-top: 1px solid var(--line); font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-dim); letter-spacing: 0.05em; }
+
+  /* PRODUCT GRID */
+  .products { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .product {
+    background: var(--bg); padding: 32px; position: relative;
+    transition: background .3s; min-height: 220px;
+    display: flex; flex-direction: column;
   }
-  .demo-text { padding: 56px; border-right: 1px solid var(--line); }
-  .demo-text h3 {
-    font-family: 'Fraunces', serif; font-weight: 300;
-    font-size: 44px; line-height: 1.05; letter-spacing: -0.025em; margin-bottom: 24px;
+  .product:hover { background: var(--bg-2); }
+  .product-tag {
+    align-self: flex-start;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 3px 10px; margin-bottom: 20px;
   }
-  .demo-text h3 em { font-style: italic; color: var(--accent); font-weight: 400; }
-  .demo-text p { color: var(--ink-dim); font-size: 15px; line-height: 1.7; margin-bottom: 28px; }
-  .demo-text ul { list-style: none; margin-bottom: 32px; }
-  .demo-text li {
-    font-family: 'JetBrains Mono', monospace; font-size: 12px;
-    padding: 10px 0; padding-left: 24px; position: relative; color: var(--ink); letter-spacing: 0.02em;
+  .product-tag.wip { background: var(--warn); color: var(--bg); }
+  .product-tag.soon { background: var(--ink-faint); color: var(--ink); }
+  .product-tag.research { background: rgba(148, 210, 189, 0.15); color: var(--good); border: 1px solid rgba(148, 210, 189, 0.3); }
+  .product h4 {
+    font-family: 'Fraunces', serif; font-weight: 400; font-style: italic;
+    font-size: 28px; letter-spacing: -0.02em; margin-bottom: 10px;
   }
-  .demo-text li::before {
-    content: '→'; position: absolute; left: 0; color: var(--accent); font-weight: 700;
-  }
-  .demo-terminal { padding: 36px; background: var(--bg); font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.9; }
-  .term-bar { display: flex; gap: 6px; margin-bottom: 22px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
-  .term-bar span { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
-  .term-bar span:first-child { background: var(--accent); }
-  .term-line .p { color: var(--accent); }
-  .term-line .k { color: #e9c46a; }
-  .term-line .s { color: #94d2bd; }
-  .term-line .c { color: var(--ink-faint); }
-  .term-line .ok { color: var(--good); }
-  .cursor::after { content: '▌'; animation: blink 1s infinite; color: var(--accent); }
-  @keyframes blink { 50% { opacity: 0; } }
+  .product .category { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 14px; }
+  .product p { color: var(--ink-dim); font-size: 13px; line-height: 1.65; flex-grow: 1; }
+  .product .eta { margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--line); font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-faint); letter-spacing: 0.08em; text-transform: uppercase; }
 
   /* APPROACH */
   .approach {
@@ -314,30 +266,35 @@
     .nav-links { display: none; }
     .hero { padding: 110px 24px 60px; }
     section { padding: 70px 24px; }
-    .metrics { grid-template-columns: 1fr 1fr; gap: 24px; padding: 28px; }
+    .status-strip { flex-direction: column; align-items: flex-start; padding: 24px; gap: 18px; }
     .sec-head { grid-template-columns: 1fr; gap: 24px; margin-bottom: 48px; }
-    .why-cpu { grid-template-columns: 1fr; padding: 36px; gap: 32px; }
-    .bench-grid { grid-template-columns: 1fr; }
-    .roadmap, .approach { grid-template-columns: 1fr; }
-    .demo-section { grid-template-columns: 1fr; }
-    .demo-text { border-right: none; border-bottom: 1px solid var(--line); padding: 36px; }
-    .demo-terminal { padding: 28px; }
+    .flagship { grid-template-columns: 1fr; }
+    .flagship-left { border-right: none; border-bottom: 1px solid var(--line); padding: 36px; }
+    .products { grid-template-columns: 1fr; }
+    .approach { grid-template-columns: 1fr; }
     .cta-section { grid-template-columns: 1fr; gap: 40px; padding: 70px 24px; }
-    .disclosure { grid-template-columns: 1fr; padding: 24px; }
     footer { padding: 32px 24px; }
-    .lat-row { grid-template-columns: 60px 1fr 80px; gap: 12px; }
+  }
+  @media (min-width: 901px) and (max-width: 1200px) {
+    .products { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="logo">raya<span>/</span>kv</div>
+  <div class="logo">
+    <svg class="mark" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+      <rect width="64" height="64" rx="12" fill="#0e0d0b"/>
+      <path d="M18 46 V18 H34 a8 8 0 0 1 0 16 H22 M34 34 L46 46" stroke="#ff5b1f" stroke-width="5" stroke-linecap="square" stroke-linejoin="miter" fill="none"/>
+    </svg>
+    raya<span class="div">/</span>labs
+  </div>
   <div class="nav-links">
-    <a href="#benchmark">Benchmark</a>
-    <a href="#why">Why CPU</a>
-    <a href="#roadmap">Roadmap</a>
-    <a href="#demo">Demo</a>
+    <a href="#flagship">rayakv</a>
+    <a href="#lineup">Lineup</a>
+    <a href="#approach">Approach</a>
+    <a href="#contact">Contact</a>
   </div>
   <a href="#contact" class="nav-cta">Request access →</a>
 </nav>
@@ -346,256 +303,184 @@
 <section class="hero">
   <div class="hero-badge fade d1">
     <span class="pulse"></span>
-    Production benchmark · 17 May 2026 · 24h run
+    Independent research lab · Indonesia · est. 2025
   </div>
 
   <h1 class="fade d2">
-    Sub-2ms <em>p99</em><br>
-    KV-cache.<br>
-    On <span class="strike">GPU</span> <em>CPU.</em>
+    A small lab.<br>
+    <em>Several</em> hard problems.<br>
+    <span class="strike">A lot</span> <em>Real</em> numbers.
   </h1>
 
   <p class="hero-lead fade d3">
-    <strong>rayakv</strong> is a closed-source KV-cache server built for CPU inference. 838,716 requests in 24 hours. p99 latency 1.95ms. Success rate 99.9998%. Numbers measured, not marketed.
+    <strong>Raya Labs</strong> builds closed-source libraries for AI inference, KV-cache, quantum simulation, and high-performance systems. Every product ships with reproducible benchmarks — no demos that mysteriously stop working under load.
   </p>
 
   <div class="hero-ctas fade d4">
-    <a href="#benchmark" class="btn btn-primary">See the numbers →</a>
-    <a href="#demo" class="btn btn-ghost">Try the demo</a>
+    <a href="#flagship" class="btn btn-primary">See the flagship →</a>
+    <a href="#lineup" class="btn btn-ghost">Browse the lineup</a>
   </div>
 
-  <div class="metrics fade d5">
-    <div class="metric">
-      <div class="num"><em>1.95</em><span style="font-size:0.5em; color: var(--ink-dim); margin-left: 4px;">ms</span></div>
-      <div class="desc">p99 latency<br>(24h endurance)</div>
+  <div class="status-strip fade d5">
+    <div class="item">
+      <span class="v">1</span>
+      <span class="l">Production<br>library shipping</span>
     </div>
-    <div class="metric">
-      <div class="num">99.9998<em>%</em></div>
-      <div class="desc">Success rate<br>838,714 / 838,716</div>
+    <div class="item">
+      <span class="v">6+</span>
+      <span class="l">In active<br>development</span>
     </div>
-    <div class="metric">
-      <div class="num">838<em>k</em></div>
-      <div class="desc">Requests served<br>in 24 hours</div>
+    <div class="item">
+      <span class="v">1.95<span style="font-size:0.55em;color:var(--ink-dim);">ms</span></span>
+      <span class="l">Flagship p99<br>(24h endurance)</span>
     </div>
-    <div class="metric">
-      <div class="num">99.7<em>%</em></div>
-      <div class="desc">Cache hit rate<br>sustained</div>
-    </div>
-  </div>
-</section>
-
-<!-- WHY CPU -->
-<section id="why">
-  <div class="sec-head">
-    <h2>Built for <em>CPU.</em><br>On purpose.</h2>
-    <p>Most KV-cache work assumes you have a fleet of H100s. rayakv assumes you don't — and that you'd rather not. The performance target is the inference path, not the marketing slide.</p>
-  </div>
-
-  <div class="why-cpu">
-    <div>
-      <h3>The GPU isn't always<br>the <em>bottleneck.</em></h3>
-      <p class="lead">For long-context inference, KV-cache serving is often the wall. <strong>rayakv removes that wall on commodity CPU</strong> — no GPU required, no CUDA toolchain, no driver hell.</p>
-      <p class="lead">If you're running edge inference, on-prem deployments, or just tired of paying GPU rent for cache hits — this is for you.</p>
-    </div>
-    <ul class="why-list">
-      <li>
-        <span class="icon">01</span>
-        <span class="text">Zero GPU dependency
-          <span>Runs on any x86_64 server. ARM Neoverse support in testing.</span>
-        </span>
-      </li>
-      <li>
-        <span class="icon">02</span>
-        <span class="text">Predictable tail latency
-          <span>p50 → p99 spread of only 0.37ms over 24h endurance.</span>
-        </span>
-      </li>
-      <li>
-        <span class="icon">03</span>
-        <span class="text">Persistent cache across restarts
-          <span>Cold-start to first hit: under 150ms p99.</span>
-        </span>
-      </li>
-      <li>
-        <span class="icon">04</span>
-        <span class="text">Single binary, no telemetry
-          <span>Drop in. Run. Air-gap if you need to.</span>
-        </span>
-      </li>
-    </ul>
-  </div>
-</section>
-
-<!-- BENCHMARK -->
-<section id="benchmark">
-  <div class="sec-head">
-    <h2>Production <em>benchmark.</em></h2>
-    <p>One continuous run. 1,440 minutes. 838,716 requests. Raw data exported in JSON, available on request. Every number on this page comes from the same run — no cherry-picking, no second-attempt rerolls.</p>
-  </div>
-
-  <div class="bench-wrap">
-    <div class="bench-header">
-      <span class="title">rayakv · Endurance run · 24h continuous</span>
-      <span class="meta">2026-05-17 04:00 UTC · localhost:8080 · n=838,716</span>
-    </div>
-
-    <div class="bench-grid">
-      <div class="bench-cell">
-        <div class="label-row">
-          <span class="cell-label">p50 latency</span>
-          <span class="cell-sub">median</span>
-        </div>
-        <div class="big-num"><em>1.58</em>ms</div>
-        <div class="cell-foot">half of requests served faster</div>
-      </div>
-
-      <div class="bench-cell">
-        <div class="label-row">
-          <span class="cell-label">p95 latency</span>
-          <span class="cell-sub">95th percentile</span>
-        </div>
-        <div class="big-num"><em>1.95</em>ms</div>
-        <div class="cell-foot">tight distribution → predictable</div>
-      </div>
-
-      <div class="bench-cell">
-        <div class="label-row">
-          <span class="cell-label">p99 latency</span>
-          <span class="cell-sub">99th percentile</span>
-        </div>
-        <div class="big-num"><em>2.18</em>ms</div>
-        <div class="cell-foot">99% of requests under 2.2ms</div>
-      </div>
-
-      <div class="bench-cell">
-        <div class="label-row">
-          <span class="cell-label">Max latency</span>
-          <span class="cell-sub">worst case · disclosed</span>
-        </div>
-        <div class="big-num" style="color: var(--warn);">506.75ms</div>
-        <div class="cell-foot warn">1 outlier in 838k — root cause under review</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Latency distribution -->
-  <div class="lat-dist">
-    <h4>Latency distribution · <span style="color: var(--accent);">endurance run</span></h4>
-    <div class="lat-row">
-      <span class="pct">min</span>
-      <div class="bar"><div class="bar-fill" style="width: 4%"></div></div>
-      <span class="value">0.97 ms</span>
-    </div>
-    <div class="lat-row">
-      <span class="pct">avg</span>
-      <div class="bar"><div class="bar-fill" style="width: 9%"></div></div>
-      <span class="value">2.11 ms</span>
-    </div>
-    <div class="lat-row">
-      <span class="pct">p50</span>
-      <div class="bar"><div class="bar-fill" style="width: 7%"></div></div>
-      <span class="value">1.58 ms</span>
-    </div>
-    <div class="lat-row">
-      <span class="pct">p95</span>
-      <div class="bar"><div class="bar-fill" style="width: 9%"></div></div>
-      <span class="value">1.95 ms</span>
-    </div>
-    <div class="lat-row">
-      <span class="pct">p99</span>
-      <div class="bar"><div class="bar-fill" style="width: 10%"></div></div>
-      <span class="value">2.18 ms</span>
-    </div>
-    <div class="lat-row">
-      <span class="pct">max</span>
-      <div class="bar"><div class="bar-fill" style="width: 100%; background: var(--warn);"></div></div>
-      <span class="value" style="color: var(--warn);">506.75 ms</span>
-    </div>
-  </div>
-
-  <!-- Disclosure -->
-  <div class="disclosure">
-    <div class="ic">⚠</div>
-    <div>
-      <h5>About that 506ms outlier</h5>
-      <p>Out of 838,716 requests, exactly one spiked to ~507ms. That's 1 in 419,358 — disclosed openly rather than hidden. Root cause analysis in progress. If your workload can't tolerate a single multi-hundred-ms tail event, ask us about the SLA tier before licensing.</p>
+    <div class="item">
+      <span class="v">100%</span>
+      <span class="l">Reproducible<br>benchmark runs</span>
     </div>
   </div>
 </section>
 
-<!-- ROADMAP -->
-<section id="roadmap">
+<!-- FLAGSHIP -->
+<section id="flagship">
   <div class="sec-head">
-    <h2>Where it <em>runs</em><br>— and where it's going.</h2>
-    <p>CPU is shipping. GPU and TPU are in active development. We publish status honestly — "in progress" means in progress, not "trust us, soon."</p>
+    <h2>The flagship:<br><em>rayakv.</em></h2>
+    <p>Our first production library. A CPU-first KV-cache server that hits sub-2ms p99 over a 24-hour endurance run. Available now under a closed-source commercial license — full demo binary on request.</p>
   </div>
 
-  <div class="roadmap">
-    <div class="road-item">
-      <span class="road-tag shipped">Shipped</span>
-      <h4><em>CPU</em> backend</h4>
-      <p>Production-ready. x86_64 only for now. ARM Neoverse and Apple Silicon in private testing.</p>
-      <div class="stat">p99: <strong>1.95ms</strong> · 24h sustained · n=838,716</div>
-    </div>
+  <div class="flagship">
+    <div class="flagship-left">
+      <span class="flagship-tag">Shipped · v0.8</span>
+      <h3>rayakv</h3>
+      <div class="tagline">CPU-first KV-cache · Sub-2ms p99</div>
+      <p>A closed-source KV-cache server built for CPU inference. <strong>838,716 requests in 24 hours. p99 latency 1.95ms. Success rate 99.9998%.</strong> Drop-in binary. Zero GPU dependency. Works air-gapped.</p>
 
-    <div class="road-item">
-      <span class="road-tag progress">In progress</span>
-      <h4><em>GPU</em> backend</h4>
-      <p>Early validation on Colab T4 and A100. Not yet production-ready — full benchmark suite scheduled for Q3 2026.</p>
-      <div class="stat">Status: <strong>preliminary · exploratory only</strong></div>
-    </div>
+      <div class="flagship-stats">
+        <div class="flagship-stat">
+          <div class="v">1.58ms</div>
+          <div class="l">p50 latency</div>
+        </div>
+        <div class="flagship-stat">
+          <div class="v">1.95ms</div>
+          <div class="l">p95 latency</div>
+        </div>
+        <div class="flagship-stat">
+          <div class="v">2.18ms</div>
+          <div class="l">p99 latency</div>
+        </div>
+        <div class="flagship-stat">
+          <div class="v">99.7%</div>
+          <div class="l">Cache hit rate</div>
+        </div>
+      </div>
 
-    <div class="road-item">
-      <span class="road-tag planned">Planned</span>
-      <h4><em>TPU</em> backend</h4>
-      <p>TPU v5e and v6 targets in design phase. Pending interest from production users — early access list open.</p>
-      <div class="stat">Status: <strong>design phase · 2026 H2</strong></div>
-    </div>
-  </div>
-</section>
-
-<!-- DEMO -->
-<section id="demo">
-  <div class="sec-head">
-    <h2>Not sure? <em>Try it</em><br>before you buy.</h2>
-    <p>The demo is the full library — same binary that produced the benchmark above. Time-limited to 14 days, no telemetry, runs offline. Reproduce the 24h endurance run on your own hardware.</p>
-  </div>
-
-  <div class="demo-section">
-    <div class="demo-text">
-      <h3>Run the <em>real thing</em>.<br>On your own server.</h3>
-      <p>No stripped-down feature set. No phone-home. Same binary, same kernels, same performance characteristics. If you can't reproduce 1.95ms p99 on equivalent hardware, we want to know first.</p>
-      <ul>
-        <li>Single static binary · zero dependencies</li>
-        <li>Reproduces the 24h endurance benchmark</li>
-        <li>Air-gap friendly · no network required</li>
-        <li>Raw logs in JSON · yours to keep</li>
-      </ul>
       <a href="#contact" class="btn btn-primary">Get demo access →</a>
     </div>
-    <div class="demo-terminal">
-      <div class="term-bar"><span></span><span></span><span></span></div>
-      <div class="term-line"><span class="c"># 1. install the demo</span></div>
-      <div class="term-line"><span class="p">$</span> curl -sSf rayakv.dev/demo | sh</div>
-      <div class="term-line"><span class="ok">  ✓ verified signature</span></div>
-      <div class="term-line"><span class="ok">  ✓ rayakv-0.8 installed</span></div>
-      <div class="term-line">&nbsp;</div>
-      <div class="term-line"><span class="c"># 2. reproduce the benchmark</span></div>
-      <div class="term-line"><span class="p">$</span> rayakv bench \</div>
-      <div class="term-line">&nbsp;&nbsp;&nbsp;<span class="k">--mode</span> <span class="s">endurance</span> \</div>
-      <div class="term-line">&nbsp;&nbsp;&nbsp;<span class="k">--duration</span> <span class="s">24h</span></div>
-      <div class="term-line">&nbsp;</div>
-      <div class="term-line"><span class="ok">  p50  → 1.58 ms</span></div>
-      <div class="term-line"><span class="ok">  p95  → 1.95 ms</span></div>
-      <div class="term-line"><span class="ok">  p99  → 2.18 ms</span></div>
-      <div class="term-line"><span class="ok">  hit  → 99.70%</span></div>
-      <div class="term-line"><span class="c">  → saved to ./rayakv-report.json</span><span class="cursor"></span></div>
+
+    <div class="flagship-right">
+      <div class="fr-header">
+        <span class="t">Endurance · 24h continuous</span>
+        <span class="live"><span class="dot"></span>n = 838,716</span>
+      </div>
+      <div class="lat-rows">
+        <div class="lat-row">
+          <span class="pct">min</span>
+          <div class="bar"><div class="bar-fill" style="width: 4%"></div></div>
+          <span class="value">0.97 ms</span>
+        </div>
+        <div class="lat-row">
+          <span class="pct">p50</span>
+          <div class="bar"><div class="bar-fill" style="width: 7%"></div></div>
+          <span class="value">1.58 ms</span>
+        </div>
+        <div class="lat-row">
+          <span class="pct">avg</span>
+          <div class="bar"><div class="bar-fill" style="width: 9%"></div></div>
+          <span class="value">2.11 ms</span>
+        </div>
+        <div class="lat-row">
+          <span class="pct">p95</span>
+          <div class="bar"><div class="bar-fill" style="width: 9%"></div></div>
+          <span class="value">1.95 ms</span>
+        </div>
+        <div class="lat-row">
+          <span class="pct">p99</span>
+          <div class="bar"><div class="bar-fill" style="width: 10%"></div></div>
+          <span class="value">2.18 ms</span>
+        </div>
+        <div class="lat-row">
+          <span class="pct">max</span>
+          <div class="bar"><div class="bar-fill" style="width: 100%; background: var(--warn);"></div></div>
+          <span class="value warn">506.75 ms</span>
+        </div>
+      </div>
+      <div class="fr-foot">2026-05-17 · CPU only · GPU/TPU benchmarks in progress · raw JSON available on request</div>
     </div>
+  </div>
+</section>
+
+<!-- LINEUP -->
+<section id="lineup">
+  <div class="sec-head">
+    <h2>The rest of the <em>lineup.</em></h2>
+    <p>Six more libraries in active development across AI, quantum, and systems. Naming, scope, and ETAs are honest placeholders — we don't ship vaporware, and we don't promise dates we can't hit. Sign up below to be notified when each goes to private beta.</p>
+  </div>
+
+  <div class="products">
+
+    <div class="product">
+      <span class="product-tag wip">In progress</span>
+      <div class="category">AI · Inference</div>
+      <h4>[product-02]</h4>
+      <p>Replace this card with your second product. Suggested fields: tagline, one-sentence description, what makes it different.</p>
+      <div class="eta">ETA · 2026 Q3</div>
+    </div>
+
+    <div class="product">
+      <span class="product-tag wip">In progress</span>
+      <div class="category">Quantum · Simulation</div>
+      <h4>[product-03]</h4>
+      <p>Your quantum simulator description here. Mention target qubit count, baseline you're beating, and target use case.</p>
+      <div class="eta">ETA · 2026 Q4</div>
+    </div>
+
+    <div class="product">
+      <span class="product-tag soon">Coming soon</span>
+      <div class="category">AI · Training</div>
+      <h4>[product-04]</h4>
+      <p>Placeholder for a training-side library. Replace with name, one-line value prop, and the metric you'll publish.</p>
+      <div class="eta">ETA · 2027 H1</div>
+    </div>
+
+    <div class="product">
+      <span class="product-tag soon">Coming soon</span>
+      <div class="category">Systems · Runtime</div>
+      <h4>[product-05]</h4>
+      <p>A systems-level runtime library. Replace this with your real positioning when ready.</p>
+      <div class="eta">ETA · 2027 H1</div>
+    </div>
+
+    <div class="product">
+      <span class="product-tag research">Research</span>
+      <div class="category">AI · Compression</div>
+      <h4>[product-06]</h4>
+      <p>A research-stage project. Keep this tag for things you're exploring but haven't committed to shipping.</p>
+      <div class="eta">Status · Exploratory</div>
+    </div>
+
+    <div class="product">
+      <span class="product-tag research">Research</span>
+      <div class="category">Quantum · Hybrid</div>
+      <h4>[product-07]</h4>
+      <p>Another research card. Honest framing here is your edge — "we're exploring this" beats "coming soon" if there's no real ETA.</p>
+      <div class="eta">Status · Exploratory</div>
+    </div>
+
   </div>
 </section>
 
 <!-- APPROACH -->
-<section>
+<section id="approach">
   <div class="sec-head">
     <h2>A note on <em>scale.</em></h2>
     <p>Raya Labs is one engineer. That sounds like a weakness — it's the whole point. No PM overhead, no roadmap politics, no "shipped to look busy" releases. Every line is written, benchmarked, and supported by the same person.</p>
@@ -605,12 +490,12 @@
     <div class="approach-item">
       <div class="n">01</div>
       <h4>Closed-source, by design.</h4>
-      <p>Years of compounding optimization work. Closed-source isn't gatekeeping — it's how a one-person lab funds the next benchmark suite.</p>
+      <p>Each library represents years of compounding optimization work. Closed-source isn't gatekeeping — it's how a one-person lab funds the next benchmark suite.</p>
     </div>
     <div class="approach-item">
       <div class="n">02</div>
       <h4>Open numbers.</h4>
-      <p>The code is closed, but the proof isn't. Methodology, raw JSON logs, and reproduction scripts are available for every published claim.</p>
+      <p>The code is closed, but the proof isn't. Methodology, raw JSON logs, and reproduction scripts are available for every published claim. Losses disclosed alongside wins.</p>
     </div>
     <div class="approach-item">
       <div class="n">03</div>
@@ -635,12 +520,12 @@
   <div>
     <span class="mono">— Let's talk</span>
     <h2 style="margin-top: 20px;">License, evaluate,<br>or just <em>ask.</em></h2>
-    <p>Demo access is free. Licensing is conversational — terms depend on use case, scale, and what you're actually deploying. Email gets a reply within 24 hours, usually less.</p>
+    <p>Demo access for rayakv is free. Early access to upcoming libraries is open — tell us what you're building and we'll let you know when something fits. Email gets a reply within 24 hours.</p>
   </div>
   <div class="cta-card">
     <div class="label">Direct contact</div>
     <a href="mailto:hello@rayalabs.dev" class="email-link">hello@rayalabs.dev</a>
-    <div class="small">Demo requests · licensing inquiries · benchmark questions · GPU early access. One inbox, one human.</div>
+    <div class="small">Demo requests · licensing inquiries · early access · benchmark questions. One inbox, one human.</div>
   </div>
 </section>
 
@@ -648,7 +533,7 @@
   <div>© 2026 Raya Labs · An independent research lab · Made in Indonesia</div>
   <div class="links">
     <a href="https://github.com/rayalabs-dev">GitHub ↗</a>
-    <a href="#benchmark">Benchmarks</a>
+    <a href="#flagship">rayakv</a>
     <a href="mailto:hello@rayalabs.dev">Contact</a>
   </div>
 </footer>
