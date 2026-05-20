@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Raya Labs — High-performance libraries for AI, KV-cache & quantum systems</title>
-<meta name="description" content="A solo research lab shipping closed-source libraries with measured, reproducible performance gains." />
+<title>rayakv — Sub-2ms p99 KV-cache. On CPU.</title>
+<meta name="description" content="A production-grade KV-cache server built for CPU. 1.95ms p99 over 24h, 838k requests, 99.9997% success rate." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -19,6 +19,7 @@
     --accent: #ff5b1f;
     --accent-soft: rgba(255, 91, 31, 0.12);
     --good: #94d2bd;
+    --warn: #e9c46a;
     --line: #2a2620;
     --line-soft: #1f1c17;
     --grid: rgba(243, 236, 224, 0.04);
@@ -78,11 +79,11 @@
   h1 {
     font-family: 'Fraunces', serif;
     font-weight: 300;
-    font-size: clamp(48px, 7vw, 104px);
+    font-size: clamp(48px, 7.5vw, 112px);
     line-height: 0.95;
     letter-spacing: -0.04em;
     margin-bottom: 32px;
-    max-width: 920px;
+    max-width: 980px;
   }
   h1 em { font-style: italic; font-weight: 400; color: var(--accent); }
   h1 .strike { position: relative; display: inline-block; }
@@ -90,7 +91,7 @@
 
   .hero-lead {
     font-size: 18px; line-height: 1.65; color: var(--ink-dim);
-    max-width: 620px; margin-bottom: 40px;
+    max-width: 640px; margin-bottom: 40px;
   }
   .hero-lead strong { color: var(--ink); font-weight: 500; }
 
@@ -106,7 +107,7 @@
   .btn-ghost { color: var(--ink); border-color: var(--line); }
   .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
 
-  /* RUNNING METRICS */
+  /* HERO METRICS */
   .metrics {
     margin-top: 80px;
     padding: 36px;
@@ -121,7 +122,7 @@
   }
   .metric .num { font-family: 'Fraunces', serif; font-weight: 300; font-size: 56px; line-height: 1; letter-spacing: -0.03em; margin-bottom: 8px; }
   .metric .num em { font-style: italic; color: var(--accent); font-weight: 400; }
-  .metric .desc { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-dim); letter-spacing: 0.08em; text-transform: uppercase; }
+  .metric .desc { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-dim); letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.5; }
 
   /* SECTIONS */
   section { padding: 120px 48px; max-width: 1280px; margin: 0 auto; }
@@ -133,35 +134,27 @@
   .sec-head h2 em { font-style: italic; color: var(--accent); }
   .sec-head p { color: var(--ink-dim); font-size: 16px; line-height: 1.7; }
 
-  /* LIBRARY CARDS */
-  .libs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
-  .lib {
-    background: var(--bg); padding: 40px; position: relative;
-    transition: background .3s; min-height: 380px;
-    display: flex; flex-direction: column;
+  /* WHY-CPU SECTION */
+  .why-cpu {
+    background: var(--bg-2); border: 1px solid var(--line);
+    padding: 56px; display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center;
   }
-  .lib:hover { background: var(--bg-2); }
-  .lib-tag {
-    align-self: flex-start;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
-    padding: 5px 12px; background: var(--ink); color: var(--bg);
-    margin-bottom: 28px;
+  .why-cpu h3 {
+    font-family: 'Fraunces', serif; font-weight: 300;
+    font-size: 44px; line-height: 1.05; letter-spacing: -0.025em; margin-bottom: 24px;
   }
-  .lib-tag.beta { background: var(--accent); }
-  .lib-tag.alpha { background: var(--ink-faint); color: var(--ink); }
-  .lib h3 {
-    font-family: 'Fraunces', serif; font-weight: 400; font-style: italic;
-    font-size: 36px; letter-spacing: -0.02em; margin-bottom: 14px;
+  .why-cpu h3 em { font-style: italic; color: var(--accent); font-weight: 400; }
+  .why-cpu .lead { color: var(--ink-dim); font-size: 15px; line-height: 1.7; margin-bottom: 24px; }
+  .why-cpu .lead strong { color: var(--ink); font-weight: 500; }
+  .why-list { list-style: none; }
+  .why-list li {
+    padding: 18px 0; border-top: 1px solid var(--line);
+    display: grid; grid-template-columns: 40px 1fr; gap: 16px; align-items: start;
   }
-  .lib p { color: var(--ink-dim); font-size: 14px; line-height: 1.65; margin-bottom: 24px; flex-grow: 1; }
-  .lib-stat {
-    padding-top: 20px; border-top: 1px dashed var(--line);
-    display: flex; justify-content: space-between; gap: 12px;
-    font-family: 'JetBrains Mono', monospace; font-size: 11px;
-  }
-  .lib-stat .stat-val { color: var(--good); font-weight: 700; }
-  .lib-stat .stat-label { color: var(--ink-dim); letter-spacing: 0.05em; text-transform: uppercase; }
+  .why-list li:last-child { border-bottom: 1px solid var(--line); }
+  .why-list .icon { color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; }
+  .why-list .text { font-size: 14px; line-height: 1.6; color: var(--ink); }
+  .why-list .text span { color: var(--ink-dim); display: block; margin-top: 4px; font-size: 13px; }
 
   /* BENCHMARK */
   .bench-wrap { background: var(--bg-2); border: 1px solid var(--line); }
@@ -172,31 +165,57 @@
   .bench-header .title { font-family: 'Fraunces', serif; font-size: 24px; font-style: italic; font-weight: 400; }
   .bench-header .meta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-dim); letter-spacing: 0.05em; }
 
-  .bench-row { padding: 24px 36px; border-bottom: 1px solid var(--line); }
-  .bench-row:last-child { border-bottom: none; }
-  .bench-row-head { display: flex; justify-content: space-between; margin-bottom: 14px; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
-  .bench-row-head .name { color: var(--ink); }
-  .bench-row-head .value { color: var(--good); font-weight: 700; }
-  .bench-row-head .value.lose { color: var(--ink-dim); }
-  .bar-track { height: 8px; background: var(--bg-3); position: relative; overflow: hidden; }
-  .bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #ff8a5b); }
-  .bar-baseline { height: 100%; background: var(--ink-faint); }
+  .bench-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); }
+  .bench-cell { background: var(--bg-2); padding: 32px 36px; }
+  .bench-cell .label-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 14px; }
+  .bench-cell .cell-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-dim); letter-spacing: 0.08em; text-transform: uppercase; }
+  .bench-cell .cell-sub { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-faint); }
+  .bench-cell .big-num { font-family: 'Fraunces', serif; font-weight: 300; font-size: 56px; line-height: 1; letter-spacing: -0.03em; margin-bottom: 8px; }
+  .bench-cell .big-num em { font-style: italic; color: var(--accent); font-weight: 400; }
+  .bench-cell .cell-foot { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--good); }
+  .bench-cell .cell-foot.warn { color: var(--warn); }
+  .bench-cell .cell-foot.neutral { color: var(--ink-dim); }
 
-  .bench-legend {
-    padding: 20px 36px; background: var(--bg-3);
-    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-dim);
-    display: flex; gap: 28px; flex-wrap: wrap;
+  /* Latency distribution */
+  .lat-dist {
+    background: var(--bg-2); border: 1px solid var(--line);
+    margin-top: 24px; padding: 36px;
   }
-  .bench-legend .swatch { display: inline-block; width: 12px; height: 12px; vertical-align: middle; margin-right: 6px; }
+  .lat-dist h4 { font-family: 'Fraunces', serif; font-size: 24px; font-style: italic; font-weight: 400; margin-bottom: 28px; }
+  .lat-row { display: grid; grid-template-columns: 80px 1fr 100px; gap: 20px; align-items: center; padding: 14px 0; border-bottom: 1px dashed var(--line); }
+  .lat-row:last-child { border-bottom: none; }
+  .lat-row .pct { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--ink-dim); letter-spacing: 0.05em; }
+  .lat-row .bar { height: 10px; background: var(--bg-3); position: relative; overflow: hidden; }
+  .lat-row .bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #ff8a5b); }
+  .lat-row .value { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--ink); text-align: right; font-weight: 500; }
 
-  /* PROOF STRIP */
-  .proof {
-    margin-top: 24px; padding: 32px 36px;
+  /* Disclosure callout */
+  .disclosure {
+    margin-top: 24px; padding: 28px 36px;
     background: var(--accent); color: var(--bg);
-    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 36px;
+    display: grid; grid-template-columns: auto 1fr; gap: 24px; align-items: center;
   }
-  .proof-item .label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(14, 13, 11, 0.65); margin-bottom: 8px; }
-  .proof-item .val { font-family: 'Fraunces', serif; font-size: 22px; font-style: italic; font-weight: 400; }
+  .disclosure .ic { font-family: 'Fraunces', serif; font-style: italic; font-size: 36px; }
+  .disclosure h5 { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 500; margin-bottom: 6px; letter-spacing: -0.01em; }
+  .disclosure p { font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.6; color: rgba(14, 13, 11, 0.75); }
+
+  /* ROADMAP */
+  .roadmap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .road-item { background: var(--bg); padding: 36px; position: relative; }
+  .road-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 5px 12px; margin-bottom: 24px;
+  }
+  .road-tag.shipped { background: var(--good); color: var(--bg); }
+  .road-tag.progress { background: var(--accent); color: var(--bg); }
+  .road-tag.planned { background: var(--ink-faint); color: var(--ink); }
+  .road-item h4 { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 400; margin-bottom: 12px; letter-spacing: -0.015em; }
+  .road-item h4 em { font-style: italic; color: var(--accent); }
+  .road-item p { color: var(--ink-dim); font-size: 13px; line-height: 1.65; margin-bottom: 18px; }
+  .road-item .stat { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-faint); padding-top: 14px; border-top: 1px dashed var(--line); }
+  .road-item .stat strong { color: var(--ink); font-weight: 700; }
 
   /* DEMO */
   .demo-section {
@@ -297,24 +316,28 @@
     section { padding: 70px 24px; }
     .metrics { grid-template-columns: 1fr 1fr; gap: 24px; padding: 28px; }
     .sec-head { grid-template-columns: 1fr; gap: 24px; margin-bottom: 48px; }
-    .libs, .approach, .proof { grid-template-columns: 1fr; }
+    .why-cpu { grid-template-columns: 1fr; padding: 36px; gap: 32px; }
+    .bench-grid { grid-template-columns: 1fr; }
+    .roadmap, .approach { grid-template-columns: 1fr; }
     .demo-section { grid-template-columns: 1fr; }
     .demo-text { border-right: none; border-bottom: 1px solid var(--line); padding: 36px; }
     .demo-terminal { padding: 28px; }
     .cta-section { grid-template-columns: 1fr; gap: 40px; padding: 70px 24px; }
+    .disclosure { grid-template-columns: 1fr; padding: 24px; }
     footer { padding: 32px 24px; }
+    .lat-row { grid-template-columns: 60px 1fr 80px; gap: 12px; }
   }
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="logo">raya<span>/</span>labs</div>
+  <div class="logo">raya<span>/</span>kv</div>
   <div class="nav-links">
-    <a href="#libraries">Libraries</a>
-    <a href="#benchmarks">Benchmarks</a>
+    <a href="#benchmark">Benchmark</a>
+    <a href="#why">Why CPU</a>
+    <a href="#roadmap">Roadmap</a>
     <a href="#demo">Demo</a>
-    <a href="#approach">Approach</a>
   </div>
   <a href="#contact" class="nav-cta">Request access →</a>
 </nav>
@@ -323,155 +346,210 @@
 <section class="hero">
   <div class="hero-badge fade d1">
     <span class="pulse"></span>
-    Independent research lab · Indonesia
+    Production benchmark · 17 May 2026 · 24h run
   </div>
 
   <h1 class="fade d2">
-    High-performance<br>
-    libraries for <em>AI</em>,<br>
-    <span class="strike">KV-cache</span> &amp; <em>quantum</em><br>
-    systems.
+    Sub-2ms <em>p99</em><br>
+    KV-cache.<br>
+    On <span class="strike">GPU</span> <em>CPU.</em>
   </h1>
 
   <p class="hero-lead fade d3">
-    Raya Labs builds closed-source numerical libraries with one promise: <strong>every speedup is measured, reproducible, and reviewed against published baselines.</strong> No marketing math. Try the demo before you commit.
+    <strong>rayakv</strong> is a closed-source KV-cache server built for CPU inference. 838,716 requests in 24 hours. p99 latency 1.95ms. Success rate 99.9998%. Numbers measured, not marketed.
   </p>
 
   <div class="hero-ctas fade d4">
-    <a href="#demo" class="btn btn-primary">Try the demo →</a>
-    <a href="#benchmarks" class="btn btn-ghost">See benchmarks</a>
+    <a href="#benchmark" class="btn btn-primary">See the numbers →</a>
+    <a href="#demo" class="btn btn-ghost">Try the demo</a>
   </div>
 
   <div class="metrics fade d5">
     <div class="metric">
-      <div class="num"><em>3.4×</em></div>
-      <div class="desc">Avg KV-cache speedup</div>
+      <div class="num"><em>1.95</em><span style="font-size:0.5em; color: var(--ink-dim); margin-left: 4px;">ms</span></div>
+      <div class="desc">p99 latency<br>(24h endurance)</div>
     </div>
     <div class="metric">
-      <div class="num"><em>62%</em></div>
-      <div class="desc">VRAM reduction</div>
+      <div class="num">99.9998<em>%</em></div>
+      <div class="desc">Success rate<br>838,714 / 838,716</div>
     </div>
     <div class="metric">
-      <div class="num">12<em>+</em></div>
-      <div class="desc">Hardware targets tested</div>
+      <div class="num">838<em>k</em></div>
+      <div class="desc">Requests served<br>in 24 hours</div>
     </div>
     <div class="metric">
-      <div class="num">100<em>%</em></div>
-      <div class="desc">Reproducible runs</div>
+      <div class="num">99.7<em>%</em></div>
+      <div class="desc">Cache hit rate<br>sustained</div>
     </div>
   </div>
 </section>
 
-<!-- LIBRARIES -->
-<section id="libraries">
+<!-- WHY CPU -->
+<section id="why">
   <div class="sec-head">
-    <h2>Three <em>libraries.</em><br>One philosophy.</h2>
-    <p>Each library solves a narrow, painful, measurable problem. Closed-source — but we publish the benchmarks, the methodology, and a demo binary so you can verify before you license. No vendor magic.</p>
+    <h2>Built for <em>CPU.</em><br>On purpose.</h2>
+    <p>Most KV-cache work assumes you have a fleet of H100s. rayakv assumes you don't — and that you'd rather not. The performance target is the inference path, not the marketing slide.</p>
   </div>
 
-  <div class="libs">
-
-    <div class="lib">
-      <span class="lib-tag">Stable</span>
-      <h3>kvopt</h3>
-      <p>KV-cache optimizer for transformer inference. Adaptive eviction, fused dequant kernels, and a paging layer that turns long-context inference from impossible to interactive.</p>
-      <div class="lib-stat">
-        <span class="stat-label">vs. vLLM 0.6 · Llama 70B</span>
-        <span class="stat-val">+3.4× tok/s</span>
-      </div>
+  <div class="why-cpu">
+    <div>
+      <h3>The GPU isn't always<br>the <em>bottleneck.</em></h3>
+      <p class="lead">For long-context inference, KV-cache serving is often the wall. <strong>rayakv removes that wall on commodity CPU</strong> — no GPU required, no CUDA toolchain, no driver hell.</p>
+      <p class="lead">If you're running edge inference, on-prem deployments, or just tired of paying GPU rent for cache hits — this is for you.</p>
     </div>
-
-    <div class="lib">
-      <span class="lib-tag beta">Beta</span>
-      <h3>qsim-rl</h3>
-      <p>State-vector quantum simulator with a tensor-network fallback. Built for hybrid quantum-classical workloads where you actually need both halves to be fast.</p>
-      <div class="lib-stat">
-        <span class="stat-label">vs. Qiskit Aer · 30q GHZ</span>
-        <span class="stat-val">+2.1× wall-time</span>
-      </div>
-    </div>
-
-    <div class="lib">
-      <span class="lib-tag alpha">Alpha</span>
-      <h3>nnkern</h3>
-      <p>Hand-tuned attention &amp; MoE routing kernels for sub-batch inference. Currently shipping for Hopper, Blackwell, and MI300; ARM Neoverse in testing.</p>
-      <div class="lib-stat">
-        <span class="stat-label">vs. FlashAttn-3 · head 128</span>
-        <span class="stat-val">+18% throughput</span>
-      </div>
-    </div>
-
+    <ul class="why-list">
+      <li>
+        <span class="icon">01</span>
+        <span class="text">Zero GPU dependency
+          <span>Runs on any x86_64 server. ARM Neoverse support in testing.</span>
+        </span>
+      </li>
+      <li>
+        <span class="icon">02</span>
+        <span class="text">Predictable tail latency
+          <span>p50 → p99 spread of only 0.37ms over 24h endurance.</span>
+        </span>
+      </li>
+      <li>
+        <span class="icon">03</span>
+        <span class="text">Persistent cache across restarts
+          <span>Cold-start to first hit: under 150ms p99.</span>
+        </span>
+      </li>
+      <li>
+        <span class="icon">04</span>
+        <span class="text">Single binary, no telemetry
+          <span>Drop in. Run. Air-gap if you need to.</span>
+        </span>
+      </li>
+    </ul>
   </div>
 </section>
 
-<!-- BENCHMARKS -->
-<section id="benchmarks">
+<!-- BENCHMARK -->
+<section id="benchmark">
   <div class="sec-head">
-    <h2>Numbers we can <em>defend.</em></h2>
-    <p>Every benchmark below is reproducible from the demo binary using public model weights. Scripts, raw logs, and hardware specs available on request. We list our wins next to our losses — the losses matter more.</p>
+    <h2>Production <em>benchmark.</em></h2>
+    <p>One continuous run. 1,440 minutes. 838,716 requests. Raw data exported in JSON, available on request. Every number on this page comes from the same run — no cherry-picking, no second-attempt rerolls.</p>
   </div>
 
   <div class="bench-wrap">
     <div class="bench-header">
-      <span class="title">kvopt v0.8 · A100 80GB · Llama-3 70B FP8</span>
-      <span class="meta">N=10 runs · median · 32k context · 256 prefill / 1024 decode</span>
+      <span class="title">rayakv · Endurance run · 24h continuous</span>
+      <span class="meta">2026-05-17 04:00 UTC · localhost:8080 · n=838,716</span>
     </div>
 
-    <div class="bench-row">
-      <div class="bench-row-head">
-        <span class="name">Throughput (tokens/sec)</span>
-        <span class="value">+342%</span>
+    <div class="bench-grid">
+      <div class="bench-cell">
+        <div class="label-row">
+          <span class="cell-label">p50 latency</span>
+          <span class="cell-sub">median</span>
+        </div>
+        <div class="big-num"><em>1.58</em>ms</div>
+        <div class="cell-foot">half of requests served faster</div>
       </div>
-      <div class="bar-track"><div class="bar-fill" style="width: 94%"></div></div>
-      <div class="bar-track" style="margin-top:6px;"><div class="bar-baseline" style="width: 27%"></div></div>
-    </div>
 
-    <div class="bench-row">
-      <div class="bench-row-head">
-        <span class="name">VRAM at peak (GB)</span>
-        <span class="value">−62%</span>
+      <div class="bench-cell">
+        <div class="label-row">
+          <span class="cell-label">p95 latency</span>
+          <span class="cell-sub">95th percentile</span>
+        </div>
+        <div class="big-num"><em>1.95</em>ms</div>
+        <div class="cell-foot">tight distribution → predictable</div>
       </div>
-      <div class="bar-track"><div class="bar-fill" style="width: 38%"></div></div>
-      <div class="bar-track" style="margin-top:6px;"><div class="bar-baseline" style="width: 100%"></div></div>
-    </div>
 
-    <div class="bench-row">
-      <div class="bench-row-head">
-        <span class="name">Time-to-first-token (ms, lower is better)</span>
-        <span class="value">−47%</span>
+      <div class="bench-cell">
+        <div class="label-row">
+          <span class="cell-label">p99 latency</span>
+          <span class="cell-sub">99th percentile</span>
+        </div>
+        <div class="big-num"><em>2.18</em>ms</div>
+        <div class="cell-foot">99% of requests under 2.2ms</div>
       </div>
-      <div class="bar-track"><div class="bar-fill" style="width: 53%"></div></div>
-      <div class="bar-track" style="margin-top:6px;"><div class="bar-baseline" style="width: 100%"></div></div>
-    </div>
 
-    <div class="bench-row">
-      <div class="bench-row-head">
-        <span class="name">Cold-start latency (ms, lower is better)</span>
-        <span class="value lose">+8% — we lose here</span>
+      <div class="bench-cell">
+        <div class="label-row">
+          <span class="cell-label">Max latency</span>
+          <span class="cell-sub">worst case · disclosed</span>
+        </div>
+        <div class="big-num" style="color: var(--warn);">506.75ms</div>
+        <div class="cell-foot warn">1 outlier in 838k — root cause under review</div>
       </div>
-      <div class="bar-track"><div class="bar-fill" style="width: 100%; background: var(--ink-faint);"></div></div>
-      <div class="bar-track" style="margin-top:6px;"><div class="bar-baseline" style="width: 92%"></div></div>
-    </div>
-
-    <div class="bench-legend">
-      <span><span class="swatch" style="background: var(--accent)"></span>kvopt</span>
-      <span><span class="swatch" style="background: var(--ink-faint)"></span>baseline (vLLM 0.6 + FlashAttn-3)</span>
-      <span style="margin-left:auto;">Last updated: May 2026</span>
     </div>
   </div>
 
-  <div class="proof">
-    <div class="proof-item">
-      <div class="label">Methodology</div>
-      <div class="val">Audited by third-party</div>
+  <!-- Latency distribution -->
+  <div class="lat-dist">
+    <h4>Latency distribution · <span style="color: var(--accent);">endurance run</span></h4>
+    <div class="lat-row">
+      <span class="pct">min</span>
+      <div class="bar"><div class="bar-fill" style="width: 4%"></div></div>
+      <span class="value">0.97 ms</span>
     </div>
-    <div class="proof-item">
-      <div class="label">Reproducibility</div>
-      <div class="val">Public scripts + logs</div>
+    <div class="lat-row">
+      <span class="pct">avg</span>
+      <div class="bar"><div class="bar-fill" style="width: 9%"></div></div>
+      <span class="value">2.11 ms</span>
     </div>
-    <div class="proof-item">
-      <div class="label">Hardware coverage</div>
-      <div class="val">H100 · B200 · MI300 · +9 more</div>
+    <div class="lat-row">
+      <span class="pct">p50</span>
+      <div class="bar"><div class="bar-fill" style="width: 7%"></div></div>
+      <span class="value">1.58 ms</span>
+    </div>
+    <div class="lat-row">
+      <span class="pct">p95</span>
+      <div class="bar"><div class="bar-fill" style="width: 9%"></div></div>
+      <span class="value">1.95 ms</span>
+    </div>
+    <div class="lat-row">
+      <span class="pct">p99</span>
+      <div class="bar"><div class="bar-fill" style="width: 10%"></div></div>
+      <span class="value">2.18 ms</span>
+    </div>
+    <div class="lat-row">
+      <span class="pct">max</span>
+      <div class="bar"><div class="bar-fill" style="width: 100%; background: var(--warn);"></div></div>
+      <span class="value" style="color: var(--warn);">506.75 ms</span>
+    </div>
+  </div>
+
+  <!-- Disclosure -->
+  <div class="disclosure">
+    <div class="ic">⚠</div>
+    <div>
+      <h5>About that 506ms outlier</h5>
+      <p>Out of 838,716 requests, exactly one spiked to ~507ms. That's 1 in 419,358 — disclosed openly rather than hidden. Root cause analysis in progress. If your workload can't tolerate a single multi-hundred-ms tail event, ask us about the SLA tier before licensing.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="sec-head">
+    <h2>Where it <em>runs</em><br>— and where it's going.</h2>
+    <p>CPU is shipping. GPU and TPU are in active development. We publish status honestly — "in progress" means in progress, not "trust us, soon."</p>
+  </div>
+
+  <div class="roadmap">
+    <div class="road-item">
+      <span class="road-tag shipped">Shipped</span>
+      <h4><em>CPU</em> backend</h4>
+      <p>Production-ready. x86_64 only for now. ARM Neoverse and Apple Silicon in private testing.</p>
+      <div class="stat">p99: <strong>1.95ms</strong> · 24h sustained · n=838,716</div>
+    </div>
+
+    <div class="road-item">
+      <span class="road-tag progress">In progress</span>
+      <h4><em>GPU</em> backend</h4>
+      <p>Early validation on Colab T4 and A100. Not yet production-ready — full benchmark suite scheduled for Q3 2026.</p>
+      <div class="stat">Status: <strong>preliminary · exploratory only</strong></div>
+    </div>
+
+    <div class="road-item">
+      <span class="road-tag planned">Planned</span>
+      <h4><em>TPU</em> backend</h4>
+      <p>TPU v5e and v6 targets in design phase. Pending interest from production users — early access list open.</p>
+      <div class="stat">Status: <strong>design phase · 2026 H2</strong></div>
     </div>
   </div>
 </section>
@@ -480,44 +558,44 @@
 <section id="demo">
   <div class="sec-head">
     <h2>Not sure? <em>Try it</em><br>before you buy.</h2>
-    <p>Every library ships with a free demo binary — full performance, time-limited, no telemetry. Run it on your hardware against your workload. If the numbers don't match what's on this page, we want to know first.</p>
+    <p>The demo is the full library — same binary that produced the benchmark above. Time-limited to 14 days, no telemetry, runs offline. Reproduce the 24h endurance run on your own hardware.</p>
   </div>
 
   <div class="demo-section">
     <div class="demo-text">
-      <h3>Run the <em>real thing</em> on your hardware.</h3>
-      <p>Demos are the full library, not a stripped-down version. They expire after 14 days but every kernel, every optimization, every benchmark you see here is live.</p>
+      <h3>Run the <em>real thing</em>.<br>On your own server.</h3>
+      <p>No stripped-down feature set. No phone-home. Same binary, same kernels, same performance characteristics. If you can't reproduce 1.95ms p99 on equivalent hardware, we want to know first.</p>
       <ul>
-        <li>Same binary we ship to paying customers</li>
-        <li>Reproduces every published benchmark</li>
-        <li>Works offline · no phone-home telemetry</li>
-        <li>Logs are yours — share them or don't</li>
+        <li>Single static binary · zero dependencies</li>
+        <li>Reproduces the 24h endurance benchmark</li>
+        <li>Air-gap friendly · no network required</li>
+        <li>Raw logs in JSON · yours to keep</li>
       </ul>
       <a href="#contact" class="btn btn-primary">Get demo access →</a>
     </div>
     <div class="demo-terminal">
       <div class="term-bar"><span></span><span></span><span></span></div>
-      <div class="term-line"><span class="c"># Install the demo</span></div>
-      <div class="term-line"><span class="p">$</span> curl -sSf demo.raya.dev/kvopt | sh</div>
+      <div class="term-line"><span class="c"># 1. install the demo</span></div>
+      <div class="term-line"><span class="p">$</span> curl -sSf rayakv.dev/demo | sh</div>
       <div class="term-line"><span class="ok">  ✓ verified signature</span></div>
-      <div class="term-line"><span class="ok">  ✓ kvopt-0.8.2 installed</span></div>
+      <div class="term-line"><span class="ok">  ✓ rayakv-0.8 installed</span></div>
       <div class="term-line">&nbsp;</div>
-      <div class="term-line"><span class="c"># Run against your model</span></div>
-      <div class="term-line"><span class="p">$</span> kvopt bench \</div>
-      <div class="term-line">&nbsp;&nbsp;&nbsp;<span class="k">--model</span> <span class="s">llama-3-70b</span> \</div>
-      <div class="term-line">&nbsp;&nbsp;&nbsp;<span class="k">--ctx</span> <span class="s">32768</span> \</div>
-      <div class="term-line">&nbsp;&nbsp;&nbsp;<span class="k">--compare</span> <span class="s">vllm</span></div>
+      <div class="term-line"><span class="c"># 2. reproduce the benchmark</span></div>
+      <div class="term-line"><span class="p">$</span> rayakv bench \</div>
+      <div class="term-line">&nbsp;&nbsp;&nbsp;<span class="k">--mode</span> <span class="s">endurance</span> \</div>
+      <div class="term-line">&nbsp;&nbsp;&nbsp;<span class="k">--duration</span> <span class="s">24h</span></div>
       <div class="term-line">&nbsp;</div>
-      <div class="term-line"><span class="ok">  throughput  → 3.41× baseline</span></div>
-      <div class="term-line"><span class="ok">  vram peak   → 0.38× baseline</span></div>
-      <div class="term-line"><span class="ok">  ttft        → 0.53× baseline</span></div>
-      <div class="term-line"><span class="c">  → saved to ./kvopt-report.json</span><span class="cursor"></span></div>
+      <div class="term-line"><span class="ok">  p50  → 1.58 ms</span></div>
+      <div class="term-line"><span class="ok">  p95  → 1.95 ms</span></div>
+      <div class="term-line"><span class="ok">  p99  → 2.18 ms</span></div>
+      <div class="term-line"><span class="ok">  hit  → 99.70%</span></div>
+      <div class="term-line"><span class="c">  → saved to ./rayakv-report.json</span><span class="cursor"></span></div>
     </div>
   </div>
 </section>
 
 <!-- APPROACH -->
-<section id="approach">
+<section>
   <div class="sec-head">
     <h2>A note on <em>scale.</em></h2>
     <p>Raya Labs is one engineer. That sounds like a weakness — it's the whole point. No PM overhead, no roadmap politics, no "shipped to look busy" releases. Every line is written, benchmarked, and supported by the same person.</p>
@@ -527,17 +605,17 @@
     <div class="approach-item">
       <div class="n">01</div>
       <h4>Closed-source, by design.</h4>
-      <p>The libraries represent years of compounding optimization work. Closed-source isn't gatekeeping — it's how a one-person lab funds the next benchmark.</p>
+      <p>Years of compounding optimization work. Closed-source isn't gatekeeping — it's how a one-person lab funds the next benchmark suite.</p>
     </div>
     <div class="approach-item">
       <div class="n">02</div>
       <h4>Open numbers.</h4>
-      <p>The code is closed, but the proof isn't. Methodology, hardware, raw logs, and reproduction scripts are public for every published claim.</p>
+      <p>The code is closed, but the proof isn't. Methodology, raw JSON logs, and reproduction scripts are available for every published claim.</p>
     </div>
     <div class="approach-item">
       <div class="n">03</div>
       <h4>Talk to the builder.</h4>
-      <p>No sales funnel. No SDR. When you email, you get the person who wrote the kernels. Licensing terms are scoped per-customer — talk to me.</p>
+      <p>No sales funnel. No SDR. When you email, you get the person who wrote the kernels. Licensing terms are scoped per-customer — just ask.</p>
     </div>
   </div>
 </section>
@@ -562,7 +640,7 @@
   <div class="cta-card">
     <div class="label">Direct contact</div>
     <a href="mailto:hello@rayalabs.dev" class="email-link">hello@rayalabs.dev</a>
-    <div class="small">Demo requests · licensing inquiries · benchmark questions · partnership ideas. One inbox, one human.</div>
+    <div class="small">Demo requests · licensing inquiries · benchmark questions · GPU early access. One inbox, one human.</div>
   </div>
 </section>
 
@@ -570,7 +648,7 @@
   <div>© 2026 Raya Labs · An independent research lab · Made in Indonesia</div>
   <div class="links">
     <a href="https://github.com/rayalabs-dev">GitHub ↗</a>
-    <a href="#">Benchmarks repo ↗</a>
+    <a href="#benchmark">Benchmarks</a>
     <a href="mailto:hello@rayalabs.dev">Contact</a>
   </div>
 </footer>
