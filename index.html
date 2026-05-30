@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Raya Labs | Deep Tech & Computing Lab</title>
-    <meta name="description" content="We build tech products and solve computing problems.">
+    <meta name="description" content="Raya Labs builds proprietary tech products and provides computing solutions for enterprise requirements.">
     <meta name="keywords" content="deep tech, computing lab, proprietary software, close source, computing solutions, enterprise architecture">
     <meta name="author" content="Raya Labs">
     
@@ -13,87 +13,74 @@
     <link rel="canonical" href="https://rayalabs-dev.github.io/">
     
     <style>
-        /* Warm Eye-Care / Sepia CSS for maximum reading comfort */
+        /* Eye-Care Warm Paper Palette */
         :root {
-            /* Palet kertas hangat untuk perlindungan mata */
             --bg: #FDF8ED;       
             --fg: #3A352F;       
-            --heading: #1F1C18;  /* Sangat gelap tapi bukan hitam pekat untuk judul */
+            --heading: #1F1C18;  
             --gray: #797166;     
             --light: #F2E9DA;    
             --border: #E4D7C5;   
-            
-            /* System fonts: Sans untuk kesan modern & struktural (cocok dengan logo) */
             --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-        body { font-family: var(--sans); color: var(--fg); background: var(--bg); line-height: 1.6; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
-        .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+        body { font-family: var(--sans); color: var(--fg); background: var(--bg); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+        .container { width: 100%; max-width: 1000px; margin: 0 auto; padding: 0 24px; }
         
-        /* Typography - Disesuaikan agar tebal & geometris seperti logo */
-        h1, h2, h3 { font-family: var(--sans); font-weight: 700; letter-spacing: -0.03em; color: var(--heading); }
-        h1 { font-size: 3.8rem; line-height: 1.1; margin-bottom: 24px; }
-        h2 { font-size: 2.2rem; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
-        h3 { font-size: 1.3rem; margin-bottom: 10px; font-weight: 600; letter-spacing: -0.01em; }
-        p { color: var(--gray); margin-bottom: 16px; font-size: 1.05rem; }
+        /* Typography */
+        h1, h2, h3 { font-family: var(--sans); font-weight: 700; letter-spacing: -0.02em; color: var(--heading); }
+        h1 { font-size: 3rem; line-height: 1.1; margin-bottom: 24px; }
+        h2 { font-size: 2rem; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
+        h3 { font-size: 1.25rem; margin-bottom: 8px; }
+        p { color: var(--gray); margin-bottom: 16px; font-size: 1rem; }
         
-        .mono { font-family: var(--mono); font-size: 0.9rem; }
-        .mono-blk { font-family: var(--mono); font-size: 0.85rem; margin-bottom: 20px; display: block; color: var(--gray); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+        .mono { font-family: var(--mono); font-size: 0.85rem; }
+        .mono-blk { font-family: var(--mono); font-size: 0.8rem; margin-bottom: 20px; display: block; color: var(--gray); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
         
         /* Buttons */
-        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 24px; font-weight: 600; text-decoration: none; transition: 0.15s ease; border-radius: 6px; border: 1px solid transparent; letter-spacing: -0.01em; }
+        .btn { display: inline-flex; align-items: center; padding: 10px 20px; font-weight: 600; text-decoration: none; transition: 0.15s; border-radius: 4px; border: 1px solid transparent; font-size: 0.9rem; }
         .btn-pri { background: var(--fg); color: var(--bg); border-color: var(--fg); }
-        .btn-pri:hover { background: var(--heading); border-color: var(--heading); }
+        .btn-pri:hover { background: var(--heading); }
         .btn-sec { background: transparent; color: var(--fg); border-color: var(--border); }
         .btn-sec:hover { border-color: var(--gray); background: var(--light); }
-        .btn-sm { padding: 8px 16px; font-size: 0.9rem; }
         .w-100 { width: 100%; }
         
         /* Header */
-        header { border-bottom: 1px solid var(--border); padding: 16px 0; background: rgba(253, 248, 237, 0.95); position: sticky; top: 0; z-index: 10; backdrop-filter: blur(8px); }
+        header { border-bottom: 1px solid var(--border); padding: 16px 0; background: rgba(253, 248, 237, 0.95); position: sticky; top: 0; z-index: 10; backdrop-filter: blur(4px); }
         .nav-box { display: flex; justify-content: space-between; align-items: center; }
-        .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--heading); }
-        
-        /* Penyesuaian Logo Image & Text */
-        .logo-img { height: 32px; width: auto; display: block; }
-        .logo-txt { font-family: var(--sans); font-size: 1.5rem; font-weight: 800; letter-spacing: -0.05em; }
-        
-        .nav-links { display: flex; gap: 28px; list-style: none; }
-        .nav-links a { text-decoration: none; color: var(--gray); font-size: 0.95rem; font-weight: 500; transition: color 0.2s; }
+        .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--heading); }
+        .logo-img { height: 24px; width: auto; display: block; }
+        .logo-txt { font-family: var(--sans); font-size: 1.25rem; font-weight: 700; letter-spacing: -0.03em; }
+        .nav-links { display: flex; gap: 20px; list-style: none; }
+        .nav-links a { text-decoration: none; color: var(--gray); font-size: 0.9rem; font-weight: 500; }
         .nav-links a:hover { color: var(--heading); }
         
         /* Layout */
-        section { padding: 100px 0; }
-        .hero { padding: 140px 0 100px; }
-        .hero-desc { font-size: 1.25rem; max-width: 650px; margin-bottom: 36px; line-height: 1.6; }
-        .hero-btn { display: flex; gap: 16px; }
+        section { padding: 80px 0; }
+        .hero { padding: 100px 0 80px; }
+        .hero-desc { font-size: 1.1rem; max-width: 600px; margin-bottom: 30px; }
+        .hero-btn { display: flex; gap: 12px; }
         
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; margin-top: 40px; }
-        .card { padding: 36px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 40px; }
+        .card { padding: 30px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); }
         .card-alt { background: var(--light); border-color: transparent; }
-        .card .icon { font-family: var(--mono); font-size: 0.85rem; color: var(--gray); text-transform: uppercase; margin-bottom: 24px; display: block; letter-spacing: 0.05em; font-weight: 600; }
+        .card .icon { font-family: var(--mono); font-size: 0.8rem; color: var(--gray); text-transform: uppercase; margin-bottom: 20px; display: block; font-weight: 600; }
         
-        ul.chk { list-style: none; margin-bottom: 36px; }
-        ul.chk li { padding: 10px 0; border-bottom: 1px solid var(--border); color: var(--gray); display: flex; gap: 12px; font-size: 0.95rem; }
-        ul.chk li:last-child { border-bottom: none; }
-        ul.chk li::before { content: '→'; color: var(--gray); font-family: var(--mono); font-weight: bold; }
+        ul.chk { list-style: none; margin-bottom: 30px; }
+        ul.chk li { padding: 8px 0; border-bottom: 1px solid var(--border); color: var(--gray); display: flex; gap: 10px; font-size: 0.9rem; }
+        ul.chk li::before { content: '→'; color: var(--gray); }
         
-        /* Footer */
-        footer { border-top: 1px solid var(--border); padding: 48px 0; text-align: left; background: var(--light); }
+        footer { border-top: 1px solid var(--border); padding: 40px 0; text-align: left; background: var(--light); }
         .ftr-box { display: flex; justify-content: space-between; align-items: flex-end; }
-        .ftr-box p { margin: 0; font-size: 0.85rem; color: var(--gray); }
-        .mt-8 { margin-top: 8px; font-weight: 500; }
+        .ftr-box p { margin: 0; font-size: 0.8rem; color: var(--gray); }
         
         @media (max-width: 768px) {
-            h1 { font-size: 2.8rem; }
+            h1 { font-size: 2.2rem; }
             .nav-links { display: none; }
-            .hero-btn { flex-direction: column; }
             .ftr-box { flex-direction: column; align-items: flex-start; gap: 16px; }
-            section { padding: 64px 0; }
-            .hero { padding: 80px 0 60px; }
         }
     </style>
 </head>
@@ -111,7 +98,7 @@
                     <li><a href="#licensing">Licensing</a></li>
                 </ul>
             </nav>
-            <a href="mailto:rayalabs.dev@gmail.com" class="btn btn-sec btn-sm mono">Contact_Us</a>
+            <a href="mailto:rayalabs.dev@gmail.com" class="btn btn-sec mono">Contact</a>
         </div>
     </header>
 
@@ -120,9 +107,9 @@
             <div class="container">
                 <span class="mono-blk">[ DEEP TECH & COMPUTING LAB ]</span>
                 <h1>Building reliable<br>computing solutions.</h1>
-                <p class="hero-desc">We build proprietary tech products and solve specific computing bottlenecks. Focused on architecture, security, and performance for enterprise environments.</p>
+                <p class="hero-desc">We develop proprietary technology and resolve specific computing bottlenecks. Focused on architecture, security, and operational efficiency for enterprise environments.</p>
                 <div class="hero-btn">
-                    <a href="#expertise" class="btn btn-pri">Explore Infrastructure</a>
+                    <a href="#expertise" class="btn btn-pri">Explore Lab</a>
                     <a href="mailto:rayalabs.dev@gmail.com" class="btn btn-sec">Request Access</a>
                 </div>
             </div>
@@ -135,17 +122,17 @@
                     <div class="card">
                         <span class="icon">SYS.01 // Proprietary</span>
                         <h3>Closed-Source Logic</h3>
-                        <p>Built on proprietary architecture to maintain intellectual property and reduce exposure to public vulnerabilities.</p>
+                        <p>We develop on proprietary architecture to protect intellectual property and minimize exposure to standard public vulnerabilities.</p>
                     </div>
                     <div class="card">
                         <span class="icon">SYS.02 // Compute</span>
                         <h3>Algorithmic Efficiency</h3>
-                        <p>Addressing computing bottlenecks through algorithmic optimization, asynchronous processing, and efficient memory management.</p>
+                        <p>We address computing bottlenecks through systematic optimization, data processing methods, and efficient memory utilization.</p>
                     </div>
                     <div class="card">
                         <span class="icon">SYS.03 // Build</span>
                         <h3>Deep Tech Products</h3>
-                        <p>We architect technology products at the system level to address specific, compute-heavy industrial requirements.</p>
+                        <p>We architect technology products at the system level to meet specific, compute-intensive industrial requirements.</p>
                     </div>
                 </div>
             </div>
@@ -158,15 +145,40 @@
                     <div class="card">
                         <span class="icon">LICENSE_TYPE // Commercial</span>
                         <h3>Standard Deployment</h3>
-                        <p>For organizations requiring integration with compiled binaries.</p>
+                        <p>For organizations requiring integration with ready-to-use binaries.</p>
                         <ul class="chk">
-                            <li>Pre-compiled Executables</li>
-                            <li>Security Patches</li>
-                            <li>Technical Documentation</li>
-                            <li>Standard Email Support</li>
+                            <li>Compiled Executables</li>
+                            <li>Security Patching</li>
+                            <li>Documentation</li>
+                            <li>Standard Support</li>
                         </ul>
-                        <a href="mailto:rayalabs.dev@gmail.com" class="btn btn-sec w-100">Inquire License</a>
+                        <a href="mailto:rayalabs.dev@gmail.com" class="btn btn-sec w-100">Inquire</a>
                     </div>
                     <div class="card card-alt">
                         <span class="icon">LICENSE_TYPE // Enterprise</span>
-                        <h3>
+                        <h3>Custom Infrastructure</h3>
+                        <p>Computing architectures tailored for direct integration into your private infrastructure.</p>
+                        <ul class="chk">
+                            <li>Custom-Built Architecture</li>
+                            <li>On-Premise Deployment</li>
+                            <li>Engineering Support</li>
+                            <li>Consultation</li>
+                        </ul>
+                        <a href="mailto:rayalabs.dev@gmail.com" class="btn btn-pri w-100">Consult</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container ftr-box">
+            <div>
+                <span class="logo-txt">Raya Labs</span>
+                <p>Deep Tech & Computing Lab.</p>
+            </div>
+            <p class="mono">&copy; 2026. ALL RIGHTS RESERVED.</p>
+        </div>
+    </footer>
+</body>
+</html>
