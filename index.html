@@ -8,25 +8,23 @@
     <meta name="keywords" content="deep tech, computing lab, proprietary software, close source, computing solutions, enterprise architecture">
     <meta name="author" content="Raya Labs">
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="icon" type="image/png" href="logo RL.png">
+    <link rel="apple-touch-icon" href="logo RL.png">
     <link rel="canonical" href="https://rayalabs-dev.github.io/">
     
     <style>
         /* Warm Eye-Care / Sepia CSS for maximum reading comfort */
         :root {
             /* Palet kertas hangat untuk perlindungan mata */
-            --bg: #FDF8ED;       /* Krem kertas / Warm paper */
-            --fg: #3A352F;       /* Arang kecokelatan lembut, bukan hitam pekat */
-            --heading: #26221E;  /* Sedikit lebih gelap dari teks biasa untuk judul */
-            --gray: #797166;     /* Abu-abu hangat untuk teks sekunder */
-            --light: #F2E9DA;    /* Krem sedikit lebih gelap untuk aksen kartu */
-            --border: #E4D7C5;   /* Garis pembatas yang tidak mencolok */
+            --bg: #FDF8ED;       
+            --fg: #3A352F;       
+            --heading: #1F1C18;  /* Sangat gelap tapi bukan hitam pekat untuk judul */
+            --gray: #797166;     
+            --light: #F2E9DA;    
+            --border: #E4D7C5;   
             
-            /* System fonts */
+            /* System fonts: Sans untuk kesan modern & struktural (cocok dengan logo) */
             --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            --serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
             --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
         }
         
@@ -35,18 +33,18 @@
         body { font-family: var(--sans); color: var(--fg); background: var(--bg); line-height: 1.6; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
         .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
         
-        /* Typography */
-        h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -0.01em; color: var(--heading); }
-        h1 { font-size: 3.5rem; line-height: 1.1; margin-bottom: 24px; }
+        /* Typography - Disesuaikan agar tebal & geometris seperti logo */
+        h1, h2, h3 { font-family: var(--sans); font-weight: 700; letter-spacing: -0.03em; color: var(--heading); }
+        h1 { font-size: 3.8rem; line-height: 1.1; margin-bottom: 24px; }
         h2 { font-size: 2.2rem; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
-        h3 { font-size: 1.4rem; margin-bottom: 10px; }
+        h3 { font-size: 1.3rem; margin-bottom: 10px; font-weight: 600; letter-spacing: -0.01em; }
         p { color: var(--gray); margin-bottom: 16px; font-size: 1.05rem; }
         
         .mono { font-family: var(--mono); font-size: 0.9rem; }
-        .mono-blk { font-family: var(--mono); font-size: 0.85rem; margin-bottom: 20px; display: block; color: var(--gray); text-transform: uppercase; letter-spacing: 0.05em; }
+        .mono-blk { font-family: var(--mono); font-size: 0.85rem; margin-bottom: 20px; display: block; color: var(--gray); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
         
         /* Buttons */
-        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 24px; font-weight: 500; text-decoration: none; transition: 0.15s ease; border-radius: 6px; border: 1px solid transparent; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 24px; font-weight: 600; text-decoration: none; transition: 0.15s ease; border-radius: 6px; border: 1px solid transparent; letter-spacing: -0.01em; }
         .btn-pri { background: var(--fg); color: var(--bg); border-color: var(--fg); }
         .btn-pri:hover { background: var(--heading); border-color: var(--heading); }
         .btn-sec { background: transparent; color: var(--fg); border-color: var(--border); }
@@ -58,10 +56,13 @@
         header { border-bottom: 1px solid var(--border); padding: 16px 0; background: rgba(253, 248, 237, 0.95); position: sticky; top: 0; z-index: 10; backdrop-filter: blur(8px); }
         .nav-box { display: flex; justify-content: space-between; align-items: center; }
         .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--heading); }
-        .logo-img { height: 28px; width: auto; display: block; }
-        .logo-txt { font-family: var(--serif); font-size: 1.4rem; font-weight: 600; letter-spacing: -0.02em; }
+        
+        /* Penyesuaian Logo Image & Text */
+        .logo-img { height: 32px; width: auto; display: block; }
+        .logo-txt { font-family: var(--sans); font-size: 1.5rem; font-weight: 800; letter-spacing: -0.05em; }
+        
         .nav-links { display: flex; gap: 28px; list-style: none; }
-        .nav-links a { text-decoration: none; color: var(--gray); font-size: 0.95rem; transition: color 0.2s; }
+        .nav-links a { text-decoration: none; color: var(--gray); font-size: 0.95rem; font-weight: 500; transition: color 0.2s; }
         .nav-links a:hover { color: var(--heading); }
         
         /* Layout */
@@ -73,18 +74,18 @@
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 32px; margin-top: 40px; }
         .card { padding: 36px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); }
         .card-alt { background: var(--light); border-color: transparent; }
-        .card .icon { font-family: var(--mono); font-size: 0.85rem; color: var(--gray); text-transform: uppercase; margin-bottom: 24px; display: block; letter-spacing: 0.05em; }
+        .card .icon { font-family: var(--mono); font-size: 0.85rem; color: var(--gray); text-transform: uppercase; margin-bottom: 24px; display: block; letter-spacing: 0.05em; font-weight: 600; }
         
         ul.chk { list-style: none; margin-bottom: 36px; }
         ul.chk li { padding: 10px 0; border-bottom: 1px solid var(--border); color: var(--gray); display: flex; gap: 12px; font-size: 0.95rem; }
         ul.chk li:last-child { border-bottom: none; }
-        ul.chk li::before { content: '→'; color: var(--gray); font-family: var(--mono); }
+        ul.chk li::before { content: '→'; color: var(--gray); font-family: var(--mono); font-weight: bold; }
         
         /* Footer */
         footer { border-top: 1px solid var(--border); padding: 48px 0; text-align: left; background: var(--light); }
         .ftr-box { display: flex; justify-content: space-between; align-items: flex-end; }
         .ftr-box p { margin: 0; font-size: 0.85rem; color: var(--gray); }
-        .mt-8 { margin-top: 8px; }
+        .mt-8 { margin-top: 8px; font-weight: 500; }
         
         @media (max-width: 768px) {
             h1 { font-size: 2.8rem; }
@@ -98,11 +99,10 @@
 </head>
 <body>
 
-    <!-- Header -->
     <header>
         <div class="container nav-box">
             <a href="#" class="brand">
-                <img src="logo.png" alt="Raya Labs Logo" class="logo-img" onerror="this.style.display='none'"> 
+                <img src="logo RL.png" alt="Raya Labs Logo" class="logo-img" onerror="this.style.display='none'"> 
                 <span class="logo-txt">Raya Labs</span>
             </a>
             <nav>
@@ -115,9 +115,7 @@
         </div>
     </header>
 
-    <!-- Main Content -->
     <main>
-        <!-- Hero -->
         <section id="home" class="hero">
             <div class="container">
                 <span class="mono-blk">[ DEEP TECH & COMPUTING LAB ]</span>
@@ -130,7 +128,6 @@
             </div>
         </section>
 
-        <!-- Expertise -->
         <section id="expertise">
             <div class="container">
                 <h2>Core Architecture</h2>
@@ -154,7 +151,6 @@
             </div>
         </section>
 
-        <!-- Licensing -->
         <section id="licensing">
             <div class="container">
                 <h2>Distribution & Licensing</h2>
@@ -173,31 +169,4 @@
                     </div>
                     <div class="card card-alt">
                         <span class="icon">LICENSE_TYPE // Enterprise</span>
-                        <h3>Custom Infrastructure</h3>
-                        <p>Custom computing architectures designed to integrate into your internal infrastructure.</p>
-                        <ul class="chk">
-                            <li>Custom-Built Architecture</li>
-                            <li>On-Premise / Air-gapped Deployment</li>
-                            <li>Dedicated Engineering Support</li>
-                            <li>Direct Lab Consultation</li>
-                        </ul>
-                        <a href="mailto:rayalabs.dev@gmail.com" class="btn btn-pri w-100">Consult with Lab</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container ftr-box">
-            <div>
-                <span class="logo-txt">Raya Labs</span>
-                <p class="mt-8">Deep Tech & Computing Lab.</p>
-            </div>
-            <p class="mono">&copy; 2026. ALL RIGHTS RESERVED.</p>
-        </div>
-    </footer>
-
-</body>
-</html>
+                        <h3>
