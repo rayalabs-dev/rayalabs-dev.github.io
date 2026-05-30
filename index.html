@@ -14,14 +14,15 @@
     <link rel="canonical" href="https://rayalabs-dev.github.io/">
     
     <style>
-        /* Eye-Care Dark Mode (Soft Contrast) CSS */
+        /* Warm Eye-Care / Sepia CSS for maximum reading comfort */
         :root {
-            /* Background gelap lembut & teks tidak putih murni untuk perlindungan mata */
-            --bg: #18181A; 
-            --fg: #E0E0E0; 
-            --gray: #A1A1AA; 
-            --light: #222225; 
-            --border: #333336;
+            /* Palet kertas hangat untuk perlindungan mata */
+            --bg: #FDF8ED;       /* Krem kertas / Warm paper */
+            --fg: #3A352F;       /* Arang kecokelatan lembut, bukan hitam pekat */
+            --heading: #26221E;  /* Sedikit lebih gelap dari teks biasa untuk judul */
+            --gray: #797166;     /* Abu-abu hangat untuk teks sekunder */
+            --light: #F2E9DA;    /* Krem sedikit lebih gelap untuk aksen kartu */
+            --border: #E4D7C5;   /* Garis pembatas yang tidak mencolok */
             
             /* System fonts */
             --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -35,7 +36,7 @@
         .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
         
         /* Typography */
-        h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -0.01em; color: #F4F4F5; }
+        h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -0.01em; color: var(--heading); }
         h1 { font-size: 3.5rem; line-height: 1.1; margin-bottom: 24px; }
         h2 { font-size: 2.2rem; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
         h3 { font-size: 1.4rem; margin-bottom: 10px; }
@@ -46,22 +47,22 @@
         
         /* Buttons */
         .btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 24px; font-weight: 500; text-decoration: none; transition: 0.15s ease; border-radius: 6px; border: 1px solid transparent; }
-        .btn-pri { background: #E0E0E0; color: #18181A; border-color: #E0E0E0; }
-        .btn-pri:hover { background: #FFFFFF; border-color: #FFFFFF; }
+        .btn-pri { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+        .btn-pri:hover { background: var(--heading); border-color: var(--heading); }
         .btn-sec { background: transparent; color: var(--fg); border-color: var(--border); }
         .btn-sec:hover { border-color: var(--gray); background: var(--light); }
         .btn-sm { padding: 8px 16px; font-size: 0.9rem; }
         .w-100 { width: 100%; }
         
         /* Header */
-        header { border-bottom: 1px solid var(--border); padding: 16px 0; background: rgba(24, 24, 26, 0.95); position: sticky; top: 0; z-index: 10; backdrop-filter: blur(8px); }
+        header { border-bottom: 1px solid var(--border); padding: 16px 0; background: rgba(253, 248, 237, 0.95); position: sticky; top: 0; z-index: 10; backdrop-filter: blur(8px); }
         .nav-box { display: flex; justify-content: space-between; align-items: center; }
-        .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: #F4F4F5; }
+        .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--heading); }
         .logo-img { height: 28px; width: auto; display: block; }
         .logo-txt { font-family: var(--serif); font-size: 1.4rem; font-weight: 600; letter-spacing: -0.02em; }
         .nav-links { display: flex; gap: 28px; list-style: none; }
         .nav-links a { text-decoration: none; color: var(--gray); font-size: 0.95rem; transition: color 0.2s; }
-        .nav-links a:hover { color: var(--fg); }
+        .nav-links a:hover { color: var(--heading); }
         
         /* Layout */
         section { padding: 100px 0; }
