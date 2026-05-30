@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Raya Labs | Deep Tech & Computing Lab</title>
-    <meta name="description" content="We build tech products and solve complex computing problems.">
+    <meta name="description" content="We build tech products and solve computing problems.">
     <meta name="keywords" content="deep tech, computing lab, proprietary software, close source, computing solutions, enterprise architecture">
     <meta name="author" content="Raya Labs">
     
@@ -14,16 +14,16 @@
     <link rel="canonical" href="https://rayalabs-dev.github.io/">
     
     <style>
-        /* Claude-inspired Ultra-Optimized CSS */
+        /* Eye-Care Dark Mode (Soft Contrast) CSS */
         :root {
-            /* Claude's signature warm paper/beige palette */
-            --bg: #F9F8F6; 
-            --fg: #1C1B1A; 
-            --gray: #6C6A65; 
-            --light: #F2F0EA; 
-            --border: #E5E3DB;
+            /* Background gelap lembut & teks tidak putih murni untuk perlindungan mata */
+            --bg: #18181A; 
+            --fg: #E0E0E0; 
+            --gray: #A1A1AA; 
+            --light: #222225; 
+            --border: #333336;
             
-            /* System fonts: Sans for body, Serif for elegant headings, Mono for tech accents */
+            /* System fonts */
             --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             --serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
             --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -34,9 +34,9 @@
         body { font-family: var(--sans); color: var(--fg); background: var(--bg); line-height: 1.6; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
         .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
         
-        /* Typography - Headings use Serif to match Claude's academic look */
-        h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -0.01em; color: var(--fg); }
-        h1 { font-size: 3.8rem; line-height: 1.1; margin-bottom: 24px; }
+        /* Typography */
+        h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -0.01em; color: #F4F4F5; }
+        h1 { font-size: 3.5rem; line-height: 1.1; margin-bottom: 24px; }
         h2 { font-size: 2.2rem; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
         h3 { font-size: 1.4rem; margin-bottom: 10px; }
         p { color: var(--gray); margin-bottom: 16px; font-size: 1.05rem; }
@@ -46,17 +46,17 @@
         
         /* Buttons */
         .btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 24px; font-weight: 500; text-decoration: none; transition: 0.15s ease; border-radius: 6px; border: 1px solid transparent; }
-        .btn-pri { background: var(--fg); color: var(--bg); border-color: var(--fg); }
-        .btn-pri:hover { background: #3a3836; border-color: #3a3836; }
+        .btn-pri { background: #E0E0E0; color: #18181A; border-color: #E0E0E0; }
+        .btn-pri:hover { background: #FFFFFF; border-color: #FFFFFF; }
         .btn-sec { background: transparent; color: var(--fg); border-color: var(--border); }
         .btn-sec:hover { border-color: var(--gray); background: var(--light); }
         .btn-sm { padding: 8px 16px; font-size: 0.9rem; }
         .w-100 { width: 100%; }
         
         /* Header */
-        header { border-bottom: 1px solid var(--border); padding: 16px 0; background: var(--bg); position: sticky; top: 0; z-index: 10; }
+        header { border-bottom: 1px solid var(--border); padding: 16px 0; background: rgba(24, 24, 26, 0.95); position: sticky; top: 0; z-index: 10; backdrop-filter: blur(8px); }
         .nav-box { display: flex; justify-content: space-between; align-items: center; }
-        .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--fg); }
+        .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: #F4F4F5; }
         .logo-img { height: 28px; width: auto; display: block; }
         .logo-txt { font-family: var(--serif); font-size: 1.4rem; font-weight: 600; letter-spacing: -0.02em; }
         .nav-links { display: flex; gap: 28px; list-style: none; }
@@ -77,7 +77,7 @@
         ul.chk { list-style: none; margin-bottom: 36px; }
         ul.chk li { padding: 10px 0; border-bottom: 1px solid var(--border); color: var(--gray); display: flex; gap: 12px; font-size: 0.95rem; }
         ul.chk li:last-child { border-bottom: none; }
-        ul.chk li::before { content: '→'; color: var(--fg); font-family: var(--mono); }
+        ul.chk li::before { content: '→'; color: var(--gray); font-family: var(--mono); }
         
         /* Footer */
         footer { border-top: 1px solid var(--border); padding: 48px 0; text-align: left; background: var(--light); }
@@ -119,9 +119,9 @@
         <!-- Hero -->
         <section id="home" class="hero">
             <div class="container">
-                <span class="mono-blk">[ INITIALIZING DEEP TECH ENVIRONMENT ]</span>
-                <h1>Engineering beyond<br>conventional limits.</h1>
-                <p class="hero-desc">We build proprietary tech products and solve complex computing bottlenecks. Exclusive, enterprise-grade architecture for uncompromising performance.</p>
+                <span class="mono-blk">[ DEEP TECH & COMPUTING LAB ]</span>
+                <h1>Building reliable<br>computing solutions.</h1>
+                <p class="hero-desc">We build proprietary tech products and solve specific computing bottlenecks. Focused on architecture, security, and performance for enterprise environments.</p>
                 <div class="hero-btn">
                     <a href="#expertise" class="btn btn-pri">Explore Infrastructure</a>
                     <a href="mailto:rayalabs.dev@gmail.com" class="btn btn-sec">Request Access</a>
@@ -137,17 +137,17 @@
                     <div class="card">
                         <span class="icon">SYS.01 // Proprietary</span>
                         <h3>Closed-Source Logic</h3>
-                        <p>Our products are built on proprietary architecture to guarantee intellectual property protection and enterprise-level security against public zero-day vulnerabilities.</p>
+                        <p>Built on proprietary architecture to maintain intellectual property and reduce exposure to public vulnerabilities.</p>
                     </div>
                     <div class="card">
                         <span class="icon">SYS.02 // Compute</span>
                         <h3>Algorithmic Efficiency</h3>
-                        <p>Resolving computing bottlenecks through advanced mathematical optimization, asynchronous data processing, and supreme memory management.</p>
+                        <p>Addressing computing bottlenecks through algorithmic optimization, asynchronous processing, and efficient memory management.</p>
                     </div>
                     <div class="card">
                         <span class="icon">SYS.03 // Build</span>
                         <h3>Deep Tech Products</h3>
-                        <p>Moving beyond basic software wrappers. We architect low-level technology products to address highly specific, compute-heavy industrial requirements.</p>
+                        <p>We architect technology products at the system level to address specific, compute-heavy industrial requirements.</p>
                     </div>
                 </div>
             </div>
@@ -161,10 +161,10 @@
                     <div class="card">
                         <span class="icon">LICENSE_TYPE // Commercial</span>
                         <h3>Standard Deployment</h3>
-                        <p>For organizations requiring immediate integration with ready-to-deploy compiled binaries.</p>
+                        <p>For organizations requiring integration with compiled binaries.</p>
                         <ul class="chk">
                             <li>Pre-compiled Executables</li>
-                            <li>Critical Security Patches</li>
+                            <li>Security Patches</li>
                             <li>Technical Documentation</li>
                             <li>Standard Email Support</li>
                         </ul>
@@ -173,11 +173,11 @@
                     <div class="card card-alt">
                         <span class="icon">LICENSE_TYPE // Enterprise</span>
                         <h3>Custom Infrastructure</h3>
-                        <p>Tailored deep-tech computing architectures seamlessly integrated directly into your private ecosystem.</p>
+                        <p>Custom computing architectures designed to integrate into your internal infrastructure.</p>
                         <ul class="chk">
-                            <li>Full Custom-Built Architecture</li>
+                            <li>Custom-Built Architecture</li>
                             <li>On-Premise / Air-gapped Deployment</li>
-                            <li>SLA & Dedicated Engineering Support</li>
+                            <li>Dedicated Engineering Support</li>
                             <li>Direct Lab Consultation</li>
                         </ul>
                         <a href="mailto:rayalabs.dev@gmail.com" class="btn btn-pri w-100">Consult with Lab</a>
