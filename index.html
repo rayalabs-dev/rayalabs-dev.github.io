@@ -13,43 +13,40 @@
     <link rel="canonical" href="https://rayalabs-dev.github.io/">
     
     <style>
-        /* Eye-Care Warm Paper Palette */
+        /* Sage-Warm Eye-Care Palette */
         :root {
-            --bg: #FDF8ED;       
-            --fg: #3A352F;       
-            --heading: #1F1C18;  
-            --gray: #797166;     
-            --light: #F2E9DA;    
-            --border: #E4D7C5;   
+            --bg: #E8EFE5;       /* Sage hijau lembut yang sangat terang */
+            --fg: #2D332D;       /* Hijau-abu gelap (bukan hitam) untuk teks */
+            --heading: #1E221E;  /* Lebih gelap untuk hirarki */
+            --gray: #6A736A;     /* Abu-abu sage untuk teks sekunder */
+            --light: #DEE6DB;    /* Aksen kartu */
+            --border: #C5D1C0;   /* Border lembut */
+            
             --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-        body { font-family: var(--sans); color: var(--fg); background: var(--bg); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+        body { font-family: var(--sans); color: var(--fg); background: var(--bg); line-height: 1.6; }
         .container { width: 100%; max-width: 1000px; margin: 0 auto; padding: 0 24px; }
         
-        /* Typography */
         h1, h2, h3 { font-family: var(--sans); font-weight: 700; letter-spacing: -0.02em; color: var(--heading); }
         h1 { font-size: 3rem; line-height: 1.1; margin-bottom: 24px; }
         h2 { font-size: 2rem; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
         h3 { font-size: 1.25rem; margin-bottom: 8px; }
         p { color: var(--gray); margin-bottom: 16px; font-size: 1rem; }
         
-        .mono { font-family: var(--mono); font-size: 0.85rem; }
         .mono-blk { font-family: var(--mono); font-size: 0.8rem; margin-bottom: 20px; display: block; color: var(--gray); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
         
-        /* Buttons */
         .btn { display: inline-flex; align-items: center; padding: 10px 20px; font-weight: 600; text-decoration: none; transition: 0.15s; border-radius: 4px; border: 1px solid transparent; font-size: 0.9rem; }
-        .btn-pri { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+        .btn-pri { background: var(--fg); color: #E8EFE5; border-color: var(--fg); }
         .btn-pri:hover { background: var(--heading); }
         .btn-sec { background: transparent; color: var(--fg); border-color: var(--border); }
         .btn-sec:hover { border-color: var(--gray); background: var(--light); }
         .w-100 { width: 100%; }
         
-        /* Header */
-        header { border-bottom: 1px solid var(--border); padding: 16px 0; background: rgba(253, 248, 237, 0.95); position: sticky; top: 0; z-index: 10; backdrop-filter: blur(4px); }
+        header { border-bottom: 1px solid var(--border); padding: 16px 0; background: rgba(232, 239, 229, 0.95); position: sticky; top: 0; z-index: 10; backdrop-filter: blur(4px); }
         .nav-box { display: flex; justify-content: space-between; align-items: center; }
         .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--heading); }
         .logo-img { height: 24px; width: auto; display: block; }
@@ -58,7 +55,6 @@
         .nav-links a { text-decoration: none; color: var(--gray); font-size: 0.9rem; font-weight: 500; }
         .nav-links a:hover { color: var(--heading); }
         
-        /* Layout */
         section { padding: 80px 0; }
         .hero { padding: 100px 0 80px; }
         .hero-desc { font-size: 1.1rem; max-width: 600px; margin-bottom: 30px; }
@@ -98,7 +94,7 @@
                     <li><a href="#licensing">Licensing</a></li>
                 </ul>
             </nav>
-            <a href="mailto:rayalabs.dev@gmail.com" class="btn btn-sec mono">Contact</a>
+            <a href="mailto:rayalabs.dev@gmail.com" class="btn btn-sec">Contact</a>
         </div>
     </header>
 
