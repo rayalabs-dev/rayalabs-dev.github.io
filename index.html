@@ -1,544 +1,222 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Raya Labs — Independent research lab building high-performance systems</title>
-<meta name="description" content="A solo research lab building closed-source libraries for AI, KV-cache, quantum, and high-performance systems. Numbers measured, not marketed." />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Core SEO -->
+    <title>Raya Labs | Deep Tech & Computing Lab</title>
+    <meta name="description" content="We build tech products and solve complex computing problems.">
+    <meta name="keywords" content="deep tech, computing lab, proprietary software, close source, computing solutions, enterprise architecture">
+    <meta name="author" content="Raya Labs">
+    
+    <!-- Favicon (Ikon di Tab Browser) -->
+    <!-- Pastikan Anda mengunggah file bernama 'favicon.png' ke repositori GitHub Anda -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
 
-<!-- Favicon: monogram R in accent oranye, SVG inline -->
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230e0d0b'/%3E%3Cpath d='M18 46 V18 H34 a8 8 0 0 1 0 16 H22 M34 34 L46 46' stroke='%23ff5b1f' stroke-width='5' stroke-linecap='square' stroke-linejoin='miter' fill='none'/%3E%3C/svg%3E" />
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230e0d0b'/%3E%3Cpath d='M18 46 V18 H34 a8 8 0 0 1 0 16 H22 M34 34 L46 46' stroke='%23ff5b1f' stroke-width='5' stroke-linecap='square' stroke-linejoin='miter' fill='none'/%3E%3C/svg%3E" />
+    <!-- Canonical Link -->
+    <link rel="canonical" href="https://rayalabs-dev.github.io/">
+    
+    <!-- Ultra-Light Internal CSS -->
+    <style>
+        /* CSS Variables for Minimalist/Groq-like Theme */
+        :root {
+            --bg: #ffffff;
+            --fg: #0a0a0a;
+            --gray: #525252;
+            --light-gray: #f5f5f5;
+            --border: #e5e5e5;
+            /* System fonts for zero-latency loading */
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #0e0d0b;
-    --bg-2: #16140f;
-    --bg-3: #1c1a14;
-    --ink: #f3ece0;
-    --ink-dim: #a39a8a;
-    --ink-faint: #5a544a;
-    --accent: #ff5b1f;
-    --accent-soft: rgba(255, 91, 31, 0.12);
-    --good: #94d2bd;
-    --warn: #e9c46a;
-    --line: #2a2620;
-    --grid: rgba(243, 236, 224, 0.04);
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--bg);
-    color: var(--ink);
-    font-family: 'Fraunces', serif;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-    background-image:
-      linear-gradient(var(--grid) 1px, transparent 1px),
-      linear-gradient(90deg, var(--grid) 1px, transparent 1px),
-      radial-gradient(ellipse at top right, rgba(255, 91, 31, 0.12), transparent 60%);
-    background-size: 60px 60px, 60px 60px, 100% 100%;
-  }
-  ::selection { background: var(--accent); color: var(--bg); }
-  a { color: inherit; text-decoration: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: var(--font-sans);
+            color: var(--fg);
+            background-color: var(--bg);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
 
-  .mono { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); }
+        .container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+        
+        /* Typography */
+        h1, h2, h3 { font-weight: 600; letter-spacing: -0.02em; }
+        h1 { font-size: 3.5rem; line-height: 1.1; margin-bottom: 24px; }
+        h2 { font-size: 2rem; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
+        h3 { font-size: 1.25rem; margin-bottom: 8px; }
+        p { color: var(--gray); margin-bottom: 16px; }
+        .mono { font-family: var(--font-mono); font-size: 0.9rem; }
 
-  /* NAV */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 24px 48px;
-    backdrop-filter: blur(12px);
-    background: rgba(14, 13, 11, 0.6);
-    border-bottom: 1px solid var(--line);
-  }
-  .logo { display: flex; align-items: center; gap: 10px; font-family: 'Fraunces', serif; font-weight: 500; font-size: 20px; letter-spacing: -0.02em; }
-  .logo .mark { width: 22px; height: 22px; }
-  .logo .div { color: var(--accent); }
-  .nav-links { display: flex; gap: 32px; }
-  .nav-links a { color: var(--ink-dim); font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; transition: color .2s; }
-  .nav-links a:hover { color: var(--ink); }
-  .nav-cta {
-    background: var(--accent); color: var(--bg); padding: 10px 18px;
-    font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
-    transition: transform .2s, box-shadow .2s;
-  }
-  .nav-cta:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
+        /* Buttons (Flat & Fast) */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 12px 24px; font-weight: 500; text-decoration: none;
+            transition: all 0.15s ease; cursor: pointer; border-radius: 4px;
+        }
+        .btn-primary { background: var(--fg); color: var(--bg); border: 1px solid var(--fg); }
+        .btn-primary:hover { background: transparent; color: var(--fg); }
+        .btn-secondary { background: transparent; color: var(--fg); border: 1px solid var(--border); }
+        .btn-secondary:hover { border-color: var(--fg); }
 
-  /* HERO */
-  .hero { padding: 140px 48px 100px; max-width: 1280px; margin: 0 auto; }
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 10px;
-    padding: 8px 16px; background: var(--accent-soft); color: var(--accent);
-    font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
-    border-radius: 100px; margin-bottom: 40px;
-    border: 1px solid rgba(255, 91, 31, 0.2);
-  }
-  .hero-badge .pulse { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
-  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .3; } }
+        /* Navbar */
+        header { border-bottom: 1px solid var(--border); padding: 16px 0; background: var(--bg); position: sticky; top: 0; z-index: 10; }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; }
+        
+        /* Logo Styling */
+        .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--fg); }
+        .logo-img { height: 28px; width: auto; display: block; } /* Tinggi logo disesuaikan */
+        .logo-text { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.05em; }
 
-  h1 {
-    font-family: 'Fraunces', serif;
-    font-weight: 300;
-    font-size: clamp(48px, 7vw, 104px);
-    line-height: 0.95;
-    letter-spacing: -0.04em;
-    margin-bottom: 32px;
-    max-width: 960px;
-  }
-  h1 em { font-style: italic; font-weight: 400; color: var(--accent); }
-  h1 .strike { position: relative; display: inline-block; }
-  h1 .strike::after { content: ''; position: absolute; left: 0; right: 0; top: 55%; height: 2px; background: var(--accent); transform: rotate(-2deg); }
+        .nav-links { display: flex; gap: 24px; list-style: none; }
+        .nav-links a { text-decoration: none; color: var(--gray); font-size: 0.95rem; }
+        .nav-links a:hover { color: var(--fg); }
 
-  .hero-lead {
-    font-size: 18px; line-height: 1.65; color: var(--ink-dim);
-    max-width: 640px; margin-bottom: 40px;
-  }
-  .hero-lead strong { color: var(--ink); font-weight: 500; }
+        /* Sections */
+        section { padding: 96px 0; }
+        
+        /* Hero */
+        .hero { padding: 120px 0; }
+        .hero-desc { font-size: 1.25rem; max-width: 600px; margin-bottom: 32px; }
+        .hero-buttons { display: flex; gap: 16px; }
 
-  .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
-  .btn {
-    padding: 16px 28px; font-family: 'JetBrains Mono', monospace; font-size: 12px;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    display: inline-flex; align-items: center; gap: 8px;
-    transition: all .25s; cursor: pointer; border: 1px solid transparent;
-  }
-  .btn-primary { background: var(--ink); color: var(--bg); }
-  .btn-primary:hover { background: var(--accent); transform: translate(-3px, -3px); box-shadow: 6px 6px 0 var(--line); }
-  .btn-ghost { color: var(--ink); border-color: var(--line); }
-  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+        /* Grid */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; margin-top: 48px; }
+        
+        /* Cards (Borders only, no shadow) */
+        .card { padding: 32px; border: 1px solid var(--border); border-radius: 4px; }
+        .card .icon { font-family: var(--font-mono); font-size: 0.85rem; color: var(--fg); text-transform: uppercase; margin-bottom: 24px; display: block; letter-spacing: 0.05em;}
+        
+        /* Lists */
+        ul.check-list { list-style: none; margin-bottom: 32px; }
+        ul.check-list li { padding: 8px 0; border-bottom: 1px solid var(--light-gray); color: var(--gray); display: flex; gap: 12px; font-size: 0.95rem; }
+        ul.check-list li::before { content: '→'; color: var(--fg); font-family: var(--font-mono); }
 
-  /* SUMMARY STATUS */
-  .status-strip {
-    margin-top: 80px;
-    padding: 24px 36px;
-    background: var(--bg-2);
-    border: 1px solid var(--line);
-    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px;
-  }
-  .status-strip .item { display: flex; align-items: center; gap: 14px; }
-  .status-strip .item .v { font-family: 'Fraunces', serif; font-size: 28px; font-style: italic; color: var(--accent); font-weight: 400; }
-  .status-strip .item .l { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-dim); letter-spacing: 0.1em; text-transform: uppercase; line-height: 1.4; }
+        /* Footer */
+        footer { border-top: 1px solid var(--border); padding: 48px 0; text-align: left; }
+        .footer-content { display: flex; justify-content: space-between; align-items: flex-end; }
+        .footer-content p { margin: 0; font-size: 0.85rem; }
 
-  /* SECTIONS */
-  section { padding: 120px 48px; max-width: 1280px; margin: 0 auto; }
-  .sec-head { display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px; margin-bottom: 72px; align-items: end; }
-  .sec-head h2 {
-    font-family: 'Fraunces', serif; font-weight: 300;
-    font-size: clamp(40px, 5.5vw, 68px); line-height: 1; letter-spacing: -0.03em;
-  }
-  .sec-head h2 em { font-style: italic; color: var(--accent); }
-  .sec-head p { color: var(--ink-dim); font-size: 16px; line-height: 1.7; }
-
-  /* FLAGSHIP CARD */
-  .flagship {
-    background: var(--bg-2); border: 1px solid var(--line);
-    display: grid; grid-template-columns: 1.1fr 1fr; gap: 0;
-    overflow: hidden;
-  }
-  .flagship-left { padding: 56px; border-right: 1px solid var(--line); }
-  .flagship-tag {
-    display: inline-block;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
-    padding: 5px 12px; background: var(--good); color: var(--bg);
-    margin-bottom: 28px;
-  }
-  .flagship-left h3 {
-    font-family: 'Fraunces', serif; font-weight: 400; font-style: italic;
-    font-size: 56px; letter-spacing: -0.025em; margin-bottom: 16px;
-    line-height: 1;
-  }
-  .flagship-left .tagline { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 28px; }
-  .flagship-left p { color: var(--ink-dim); font-size: 15px; line-height: 1.7; margin-bottom: 32px; }
-  .flagship-left p strong { color: var(--ink); font-weight: 500; }
-  .flagship-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); margin-bottom: 32px; }
-  .flagship-stat { background: var(--bg); padding: 20px; }
-  .flagship-stat .v { font-family: 'Fraunces', serif; font-size: 32px; font-style: italic; color: var(--accent); font-weight: 400; line-height: 1; margin-bottom: 6px; }
-  .flagship-stat .l { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-dim); letter-spacing: 0.08em; text-transform: uppercase; }
-
-  /* Flagship right - benchmark mini */
-  .flagship-right { padding: 0; background: var(--bg); }
-  .fr-header { padding: 20px 28px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
-  .fr-header .t { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-dim); letter-spacing: 0.08em; text-transform: uppercase; }
-  .fr-header .live { display: flex; align-items: center; gap: 8px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--good); letter-spacing: 0.1em; }
-  .fr-header .live .dot { width: 6px; height: 6px; background: var(--good); border-radius: 50%; animation: pulse 2s infinite; }
-  .lat-rows { padding: 24px 28px; }
-  .lat-row { display: grid; grid-template-columns: 50px 1fr 80px; gap: 14px; align-items: center; padding: 10px 0; }
-  .lat-row .pct { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-dim); letter-spacing: 0.05em; }
-  .lat-row .bar { height: 8px; background: var(--bg-3); position: relative; overflow: hidden; }
-  .lat-row .bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #ff8a5b); }
-  .lat-row .value { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ink); text-align: right; font-weight: 500; }
-  .lat-row .value.warn { color: var(--warn); }
-  .fr-foot { padding: 16px 28px; background: var(--bg-2); border-top: 1px solid var(--line); font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-dim); letter-spacing: 0.05em; }
-
-  /* PRODUCT GRID */
-  .products { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
-  .product {
-    background: var(--bg); padding: 32px; position: relative;
-    transition: background .3s; min-height: 220px;
-    display: flex; flex-direction: column;
-  }
-  .product:hover { background: var(--bg-2); }
-  .product-tag {
-    align-self: flex-start;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
-    padding: 3px 10px; margin-bottom: 20px;
-  }
-  .product-tag.wip { background: var(--warn); color: var(--bg); }
-  .product-tag.soon { background: var(--ink-faint); color: var(--ink); }
-  .product-tag.research { background: rgba(148, 210, 189, 0.15); color: var(--good); border: 1px solid rgba(148, 210, 189, 0.3); }
-  .product h4 {
-    font-family: 'Fraunces', serif; font-weight: 400; font-style: italic;
-    font-size: 28px; letter-spacing: -0.02em; margin-bottom: 10px;
-  }
-  .product .category { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 14px; }
-  .product p { color: var(--ink-dim); font-size: 13px; line-height: 1.65; flex-grow: 1; }
-  .product .eta { margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--line); font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-faint); letter-spacing: 0.08em; text-transform: uppercase; }
-
-  /* APPROACH */
-  .approach {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
-    background: var(--line); border: 1px solid var(--line);
-  }
-  .approach-item { background: var(--bg); padding: 40px; }
-  .approach-item .n { font-family: 'Fraunces', serif; font-size: 44px; font-style: italic; color: var(--accent); margin-bottom: 20px; font-weight: 400; }
-  .approach-item h4 { font-family: 'Fraunces', serif; font-size: 24px; font-weight: 400; margin-bottom: 14px; letter-spacing: -0.015em; }
-  .approach-item p { color: var(--ink-dim); font-size: 14px; line-height: 1.7; }
-
-  /* QUOTE */
-  .quote-section { padding: 160px 48px; text-align: center; max-width: 1100px; margin: 0 auto; }
-  .quote-section blockquote {
-    font-family: 'Fraunces', serif;
-    font-weight: 300; font-style: italic;
-    font-size: clamp(32px, 4.5vw, 52px);
-    line-height: 1.2; letter-spacing: -0.02em;
-  }
-  .quote-section blockquote em { font-style: italic; color: var(--accent); }
-  .quote-section .attr { margin-top: 36px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-dim); letter-spacing: 0.12em; text-transform: uppercase; }
-
-  /* CTA */
-  .cta-section { padding: 120px 48px; max-width: 1280px; margin: 0 auto; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1.2fr 1fr; gap: 64px; align-items: center; }
-  .cta-section h2 {
-    font-family: 'Fraunces', serif; font-weight: 300;
-    font-size: clamp(44px, 5.5vw, 76px); line-height: 1; letter-spacing: -0.03em;
-  }
-  .cta-section h2 em { font-style: italic; color: var(--accent); }
-  .cta-section p { color: var(--ink-dim); font-size: 15px; line-height: 1.7; margin-top: 24px; max-width: 480px; }
-  .cta-card {
-    background: var(--bg-2); border: 1px solid var(--line);
-    padding: 40px;
-  }
-  .cta-card .label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
-  .cta-card .email-link {
-    font-family: 'Fraunces', serif; font-style: italic;
-    font-size: 32px; color: var(--ink); display: block;
-    padding-bottom: 18px; margin-bottom: 22px;
-    border-bottom: 1px solid var(--line);
-    transition: color .2s, border-color .2s;
-  }
-  .cta-card .email-link:hover { color: var(--accent); border-color: var(--accent); }
-  .cta-card .small { font-size: 13px; color: var(--ink-dim); line-height: 1.6; }
-
-  /* FOOTER */
-  footer {
-    padding: 40px 48px; max-width: 1280px; margin: 0 auto;
-    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;
-    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-dim); letter-spacing: 0.05em;
-    border-top: 1px solid var(--line);
-  }
-  footer .links { display: flex; gap: 24px; }
-  footer .links a:hover { color: var(--accent); }
-
-  /* FADE */
-  .fade { opacity: 0; transform: translateY(20px); animation: fadeUp .9s forwards; }
-  .fade.d1 { animation-delay: .05s; } .fade.d2 { animation-delay: .2s; } .fade.d3 { animation-delay: .35s; } .fade.d4 { animation-delay: .5s; } .fade.d5 { animation-delay: .7s; }
-  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
-
-  /* RESPONSIVE */
-  @media (max-width: 900px) {
-    nav { padding: 16px 24px; }
-    .nav-links { display: none; }
-    .hero { padding: 110px 24px 60px; }
-    section { padding: 70px 24px; }
-    .status-strip { flex-direction: column; align-items: flex-start; padding: 24px; gap: 18px; }
-    .sec-head { grid-template-columns: 1fr; gap: 24px; margin-bottom: 48px; }
-    .flagship { grid-template-columns: 1fr; }
-    .flagship-left { border-right: none; border-bottom: 1px solid var(--line); padding: 36px; }
-    .products { grid-template-columns: 1fr; }
-    .approach { grid-template-columns: 1fr; }
-    .cta-section { grid-template-columns: 1fr; gap: 40px; padding: 70px 24px; }
-    footer { padding: 32px 24px; }
-  }
-  @media (min-width: 901px) and (max-width: 1200px) {
-    .products { grid-template-columns: repeat(2, 1fr); }
-  }
-</style>
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .nav-links { display: none; }
+            .hero-buttons { flex-direction: column; }
+            .footer-content { flex-direction: column; align-items: flex-start; gap: 16px; }
+            section { padding: 64px 0; }
+        }
+    </style>
 </head>
 <body>
 
-<nav>
-
- <div class="logo">
-  <span>RayaLabs</span>
-</div>
-
-  <div class="nav-links">
-    <a href="#flagship">Products</a>
-    <a href="#lineup">Libraries</a>
-    <a href="#approach">Approach</a>
-    <a href="#contact">Contact</a>
-  </div>
-
-  <a href="#contact" class="nav-cta">
-    Get access →
-  </a>
-
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-badge fade d1">
-    <span class="pulse"></span>
-    Independent research lab · Indonesia · est. 2025
-  </div>
-
-  <h1 class="fade d2">
-    A small lab.<br>
-    <em>Several</em> hard problems.<br>
-    <span class="strike">A lot</span> <em>Real</em> numbers.
-  </h1>
-
-  <p class="hero-lead fade d3">
-    <strong>Raya Labs</strong> builds closed-source libraries for AI inference, KV-cache, quantum simulation, and high-performance systems. Every product ships with reproducible benchmarks — no demos that mysteriously stop working under load.
-  </p>
-
-  <div class="hero-ctas fade d4">
-    <a href="#flagship" class="btn btn-primary">See the flagship →</a>
-    <a href="#lineup" class="btn btn-ghost">Browse the lineup</a>
-  </div>
-
-  <div class="status-strip fade d5">
-    <div class="item">
-      <span class="v">1</span>
-      <span class="l">Production<br>library shipping</span>
-    </div>
-    <div class="item">
-      <span class="v">6+</span>
-      <span class="l">In active<br>development</span>
-    </div>
-    <div class="item">
-      <span class="v">1.95<span style="font-size:0.55em;color:var(--ink-dim);">ms</span></span>
-      <span class="l">Flagship p99<br>(24h endurance)</span>
-    </div>
-    <div class="item">
-      <span class="v">100%</span>
-      <span class="l">Reproducible<br>benchmark runs</span>
-    </div>
-  </div>
-</section>
-
-<!-- FLAGSHIP -->
-<section id="flagship">
-  <div class="sec-head">
-    <h2>The flagship:<br><em>rayakv.</em></h2>
-    <p>Our first production library. A CPU-first KV-cache server that hits sub-2ms p99 over a 24-hour endurance run. Available now under a closed-source commercial license — full demo binary on request.</p>
-  </div>
-
-  <div class="flagship">
-    <div class="flagship-left">
-      <span class="flagship-tag">Shipped · v0.8</span>
-      <h3>rayakv</h3>
-      <div class="tagline">CPU-first KV-cache · Sub-2ms p99</div>
-      <p>A closed-source KV-cache server built for CPU inference. <strong>838,716 requests in 24 hours. p99 latency 1.95ms. Success rate 99.9998%.</strong> Drop-in binary. Zero GPU dependency. Works air-gapped.</p>
-
-      <div class="flagship-stats">
-        <div class="flagship-stat">
-          <div class="v">1.58ms</div>
-          <div class="l">p50 latency</div>
+    <!-- Navigation -->
+    <header>
+        <div class="container nav-container">
+            <!-- Tempat Logo -->
+            <a href="#" class="brand">
+                <!-- Ganti 'logo.png' dengan nama file gambar logo Anda di GitHub -->
+                <img src="logo.png" alt="Raya Labs Logo" class="logo-img" onerror="this.style.display='none'"> 
+                <span class="logo-text">Raya Labs.</span>
+            </a>
+            
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#expertise">Expertise</a></li>
+                    <li><a href="#licensing">Licensing</a></li>
+                </ul>
+            </nav>
+            <a href="mailto:rayalabs.dev@gmail.com" class="btn btn-secondary mono" style="padding: 8px 16px; font-size: 0.85rem;">Contact_Us</a>
         </div>
-        <div class="flagship-stat">
-          <div class="v">1.95ms</div>
-          <div class="l">p95 latency</div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="container">
+                <span class="mono" style="margin-bottom: 16px; display: block;">[ INITIALIZING DEEP TECH ENVIRONMENT ]</span>
+                <h1>Engineering beyond<br>conventional limits.</h1>
+                <p class="hero-desc">We build proprietary tech products and solve complex computing bottlenecks. Exclusive, enterprise-grade architecture for uncompromising performance.</p>
+                <div class="hero-buttons">
+                    <a href="#expertise" class="btn btn-primary">Explore Infrastructure</a>
+                    <a href="mailto:rayalabs.dev@gmail.com" class="btn btn-secondary">Request Access</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Core Expertise -->
+        <section id="expertise">
+            <div class="container">
+                <h2>Core Architecture</h2>
+                <div class="grid">
+                    <div class="card">
+                        <span class="icon">SYS.01 // Proprietary</span>
+                        <h3>Closed-Source Logic</h3>
+                        <p>Our products are built on proprietary architecture to guarantee intellectual property protection and enterprise-level security against public zero-day vulnerabilities.</p>
+                    </div>
+                    <div class="card">
+                        <span class="icon">SYS.02 // Compute</span>
+                        <h3>Algorithmic Efficiency</h3>
+                        <p>Resolving computing bottlenecks through advanced mathematical optimization, asynchronous data processing, and supreme memory management.</p>
+                    </div>
+                    <div class="card">
+                        <span class="icon">SYS.03 // Build</span>
+                        <h3>Deep Tech Products</h3>
+                        <p>Moving beyond basic software wrappers. We architect low-level technology products to address highly specific, compute-heavy industrial requirements.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Licensing -->
+        <section id="licensing">
+            <div class="container">
+                <h2>Distribution & Licensing</h2>
+                <div class="grid">
+                    <div class="card">
+                        <span class="icon">LICENSE_TYPE // Commercial</span>
+                        <h3>Standard Deployment</h3>
+                        <p>For organizations requiring immediate integration with ready-to-deploy compiled binaries.</p>
+                        <ul class="check-list">
+                            <li>Pre-compiled Executables</li>
+                            <li>Critical Security Patches</li>
+                            <li>Technical Documentation</li>
+                            <li>Standard Email Support</li>
+                        </ul>
+                        <a href="mailto:rayalabs.dev@gmail.com" class="btn btn-secondary" style="width: 100%;">Inquire License</a>
+                    </div>
+                    <div class="card" style="background: var(--light-gray);">
+                        <span class="icon">LICENSE_TYPE // Enterprise</span>
+                        <h3>Custom Infrastructure</h3>
+                        <p>Tailored deep-tech computing architectures seamlessly integrated directly into your private ecosystem.</p>
+                        <ul class="check-list">
+                            <li>Full Custom-Built Architecture</li>
+                            <li>On-Premise / Air-gapped Deployment</li>
+                            <li>SLA & Dedicated Engineering Support</li>
+                            <li>Direct Lab Consultation</li>
+                        </ul>
+                        <a href="mailto:rayalabs.dev@gmail.com" class="btn btn-primary" style="width: 100%;">Consult with Lab</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div>
+                <span class="logo-text">Raya Labs.</span>
+                <p style="margin-top: 8px;">Deep Tech & Computing Lab.</p>
+            </div>
+            <p class="mono">&copy; 2026. ALL RIGHTS RESERVED.</p>
         </div>
-        <div class="flagship-stat">
-          <div class="v">2.18ms</div>
-          <div class="l">p99 latency</div>
-        </div>
-        <div class="flagship-stat">
-          <div class="v">99.7%</div>
-          <div class="l">Cache hit rate</div>
-        </div>
-      </div>
-
-      <a href="#contact" class="btn btn-primary">Get demo access →</a>
-    </div>
-
-    <div class="flagship-right">
-      <div class="fr-header">
-        <span class="t">Endurance · 24h continuous</span>
-        <span class="live"><span class="dot"></span>n = 838,716</span>
-      </div>
-      <div class="lat-rows">
-        <div class="lat-row">
-          <span class="pct">min</span>
-          <div class="bar"><div class="bar-fill" style="width: 4%"></div></div>
-          <span class="value">0.97 ms</span>
-        </div>
-        <div class="lat-row">
-          <span class="pct">p50</span>
-          <div class="bar"><div class="bar-fill" style="width: 7%"></div></div>
-          <span class="value">1.58 ms</span>
-        </div>
-        <div class="lat-row">
-          <span class="pct">avg</span>
-          <div class="bar"><div class="bar-fill" style="width: 9%"></div></div>
-          <span class="value">2.11 ms</span>
-        </div>
-        <div class="lat-row">
-          <span class="pct">p95</span>
-          <div class="bar"><div class="bar-fill" style="width: 9%"></div></div>
-          <span class="value">1.95 ms</span>
-        </div>
-        <div class="lat-row">
-          <span class="pct">p99</span>
-          <div class="bar"><div class="bar-fill" style="width: 10%"></div></div>
-          <span class="value">2.18 ms</span>
-        </div>
-        <div class="lat-row">
-          <span class="pct">max</span>
-          <div class="bar"><div class="bar-fill" style="width: 100%; background: var(--warn);"></div></div>
-          <span class="value warn">506.75 ms</span>
-        </div>
-      </div>
-      <div class="fr-foot">2026-05-17 · CPU only · GPU/TPU benchmarks in progress · raw JSON available on request</div>
-    </div>
-  </div>
-</section>
-
-<!-- LINEUP -->
-<section id="lineup">
-  <div class="sec-head">
-    <h2>The rest of the <em>lineup.</em></h2>
-    <p>Six more libraries in active development across AI, quantum, and systems. Naming, scope, and ETAs are honest placeholders — we don't ship vaporware, and we don't promise dates we can't hit. Sign up below to be notified when each goes to private beta.</p>
-  </div>
-
-  <div class="products">
-
-    <div class="product">
-      <span class="product-tag wip">In progress</span>
-      <div class="category">AI · Inference</div>
-      <h4>[product-02]</h4>
-      <p>Replace this card with your second product. Suggested fields: tagline, one-sentence description, what makes it different.</p>
-      <div class="eta">ETA · 2026 Q3</div>
-    </div>
-
-    <div class="product">
-      <span class="product-tag wip">In progress</span>
-      <div class="category">Quantum · Simulation</div>
-      <h4>[product-03]</h4>
-      <p>Your quantum simulator description here. Mention target qubit count, baseline you're beating, and target use case.</p>
-      <div class="eta">ETA · 2026 Q4</div>
-    </div>
-
-    <div class="product">
-      <span class="product-tag soon">Coming soon</span>
-      <div class="category">AI · Training</div>
-      <h4>[product-04]</h4>
-      <p>Placeholder for a training-side library. Replace with name, one-line value prop, and the metric you'll publish.</p>
-      <div class="eta">ETA · 2027 H1</div>
-    </div>
-
-    <div class="product">
-      <span class="product-tag soon">Coming soon</span>
-      <div class="category">Systems · Runtime</div>
-      <h4>[product-05]</h4>
-      <p>A systems-level runtime library. Replace this with your real positioning when ready.</p>
-      <div class="eta">ETA · 2027 H1</div>
-    </div>
-
-    <div class="product">
-      <span class="product-tag research">Research</span>
-      <div class="category">AI · Compression</div>
-      <h4>[product-06]</h4>
-      <p>A research-stage project. Keep this tag for things you're exploring but haven't committed to shipping.</p>
-      <div class="eta">Status · Exploratory</div>
-    </div>
-
-    <div class="product">
-      <span class="product-tag research">Research</span>
-      <div class="category">Quantum · Hybrid</div>
-      <h4>[product-07]</h4>
-      <p>Another research card. Honest framing here is your edge — "we're exploring this" beats "coming soon" if there's no real ETA.</p>
-      <div class="eta">Status · Exploratory</div>
-    </div>
-
-  </div>
-</section>
-
-<!-- APPROACH -->
-<section id="approach">
-  <div class="sec-head">
-    <h2>A note on <em>scale.</em></h2>
-    <p>Raya Labs is one engineer. That sounds like a weakness — it's the whole point. No PM overhead, no roadmap politics, no "shipped to look busy" releases. Every line is written, benchmarked, and supported by the same person.</p>
-  </div>
-
-  <div class="approach">
-    <div class="approach-item">
-      <div class="n">01</div>
-      <h4>Closed-source, by design.</h4>
-      <p>Each library represents years of compounding optimization work. Closed-source isn't gatekeeping — it's how a one-person lab funds the next benchmark suite.</p>
-    </div>
-    <div class="approach-item">
-      <div class="n">02</div>
-      <h4>Open numbers.</h4>
-      <p>The code is closed, but the proof isn't. Methodology, raw JSON logs, and reproduction scripts are available for every published claim. Losses disclosed alongside wins.</p>
-    </div>
-    <div class="approach-item">
-      <div class="n">03</div>
-      <h4>Talk to the builder.</h4>
-      <p>No sales funnel. No SDR. When you email, you get the person who wrote the kernels. Licensing terms are scoped per-customer — just ask.</p>
-    </div>
-  </div>
-</section>
-
-<!-- QUOTE -->
-<section class="quote-section">
-  <blockquote>
-    "If a benchmark doesn't come with<br>
-    a reproduction script, it's <em>marketing</em><br>
-    — not a benchmark."
-  </blockquote>
-  <div class="attr">— Raya Labs operating principle #1</div>
-</section>
-
-<!-- CTA -->
-<section class="cta-section" id="contact">
-  <div>
-    <span class="mono">— Let's talk</span>
-    <h2 style="margin-top: 20px;">License, evaluate,<br>or just <em>ask.</em></h2>
-    <p>Demo access for rayakv is free. Early access to upcoming libraries is open — tell us what you're building and we'll let you know when something fits. Email gets a reply within 24 hours.</p>
-  </div>
-  <div class="cta-card">
-    <div class="label">Direct contact</div>
-    <a href="mailto:hello@rayalabs.dev" class="email-link">hello@rayalabs.dev</a>
-    <div class="small">Demo requests · licensing inquiries · early access · benchmark questions. One inbox, one human.</div>
-  </div>
-</section>
-
-<footer>
-  <div>© 2026 RayaLabs · An independent research lab · Made in Indonesia</div>
-  <div class="links">
-    <a href="https://github.com/rayalabs-dev">GitHub ↗</a>
-    <a href="#flagship">rayakv</a>
-    <a href="mailto:hello@rayalabs.dev">Contact</a>
-  </div>
-</footer>
+    </footer>
 
 </body>
 </html>
